@@ -45,7 +45,7 @@ namespace HTMLTemplate
 
         private static void Consol()
         {
-            Console.WriteLine("Connect:");
+            Console.WriteLine("Connect(IP):");
             _connect = Console.ReadLine();
             Console.WriteLine("Base:");
             _dataBase = Console.ReadLine();
