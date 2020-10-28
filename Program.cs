@@ -328,11 +328,6 @@ namespace HTMLTemplate
                         connection1.Open();
                         Property.Add((string)command1.ExecuteScalar());
                     }
-                    //while (reader.Read())
-                    //{
-                    //	Property.Add(reader[0].ToString());
-                    //	//property.Add(reader[1].ToString());
-                    //}
                 }
                 catch (Exception ex)
                 {
