@@ -118,37 +118,6 @@ namespace HTMLTemplate
             }
             Console.WriteLine("\nЗагрузить данные? ");
             if (Console.ReadLine()?.ToUpper() == "Y") Insert();
-
-            #region OLD
-            /*
-        string result;
-        using (var reader = new StreamReader(@"C:\Users\lustik_ak\source\repos\Mysql_ActionPropirty\new"))
-        {
-            result = reader.ReadToEnd();
-        }
-        //System.Console.WriteLine(result);
-        int index = 0;
-        foreach (var item in result.Split(':'))
-        {
-            try
-            {
-                System.Console.WriteLine(item);
-                using var connection = new MySqlConnection($"Server={DataBase}; database={_dataBase}; UID=dbuser; password=dbpassword");
-
-
-                var command = new MySqlCommand($"INSERT ActionPropertyType (deleted, actionType_id, idx, template_id, name, shortName, descr, unit_id, typeName, valueDomain, defaultValue, isVector, norm, sex, age, penalty, penaltyUserProfile, visibleInJobTicket, visibleInTableRedactor, isAssignable, test_id, defaultEvaluation, canChangeOnlyOwner, isActionNameSpecifier, laboratoryCalculator, inActionsSelectionTable, redactorSizeFactor, isFrozen, typeEditable, visibleInDR, userProfile_id, userProfileBehaviour, copyModifier, isVitalParam, vitalParamId, isODIIParam) VALUES (0, 45741, {index}, 0, '{item}', '', '', null, 'String', '', '', 0, '', 0, '', 0, '', 0, 0, 0, NULL, 0, 0, 0, '', 0, 0, 0, 0, 0, NULL, 0, 0, 0, NULL, 0);",
-                    connection);
-                connection.Open();
-                command.ExecuteNonQuery();
-                index++;
-            }
-            catch (Exception ex)
-            {
-                System.Console.WriteLine(ex);
-            }
-
-        }*/
-
         }
 
         private static void Insert()
@@ -358,10 +327,6 @@ namespace HTMLTemplate
         }
         #endregion
 
-
-
-
-
         #region Создание шаблона печати
         private static void Create()
         {
@@ -538,9 +503,6 @@ namespace HTMLTemplate
             }
         }
         #endregion
-
-
-
         private static void Create_test()
         {
             Property.Clear();
@@ -714,9 +676,7 @@ namespace HTMLTemplate
                 Console.ReadKey();
             }
         }
-
-
-
+    
         #region Заполнение rbThesaurus
         private static void RbThesaurus(string code, int startCode = 1)
         {
