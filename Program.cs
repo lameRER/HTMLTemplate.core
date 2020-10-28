@@ -1,4 +1,4 @@
-﻿using MySql.Data.MySqlClient;
+using MySql.Data.MySqlClient;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -29,14 +29,14 @@ namespace HTMLTemplate
 
         private static void HtmLwriter(char item)
         {
-            Thread.Sleep(Random(Ran));
+            //Thread.Sleep(Random(Ran));
             var htmLwriter1 = new StreamWriter($@"C:\VISTA_MED\lustik_ak\templates\{_docContext}.html", true, Encoding.GetEncoding("UTF-8"));
             htmLwriter1.Write($"{item}");
             htmLwriter1.Close();
         }
         private static int Random(Random ran)
         {
-            return ran.Next(100, 400);
+            return ran.Next(100, 200);
         }
 
         private static void Consol()
@@ -249,8 +249,8 @@ namespace HTMLTemplate
                             //  connection.StateChange += Mysql_StateChange;
                             Console.Write("Имя документа: (Используется при создании документа)");
                             _docName = Console.ReadLine();
-                            var command1 = new MySqlCommand("INSERT {_dataBase}.rbPrintTemplate (createDatetime, createPerson_id, modifyDatetime, modifyPerson_id, code, name, context, fileName, `default`, dpdAgreement, type, hideParam, banUnkeptDate, counter_id, deleted, isPatientAgreed, groupName, documentType_id, isEditableInWeb, pageOrientation)" +
-                                                            $"VALUES (NOW(), 1193, NOW(), 1193, '{docContext}', '{_docName}', '{docContext}', '', '{text}', 0, 0, 0, 2, NULL, 0, 0, '', NULL, 0, 'P');",
+                            var command1 = new MySqlCommand($"INSERT {_dataBase}.rbPrintTemplate (createDatetime, createPerson_id, modifyDatetime, modifyPerson_id, code, name, context, fileName, `default`, dpdAgreement, type, hideParam, banUnkeptDate, counter_id, deleted, isPatientAgreed, groupName, documentType_id, isEditableInWeb)" +
+                                                            $"VALUES (NOW(), 1, NOW(), 1, '{docContext}', '{_docName}', '{docContext}', '', '{text}', 0, 0, 0, 2, NULL, 0, 0, '', NULL, 0);",
                                 connection1);
                             connection1.Open();
                             command1.ExecuteNonQuery();
@@ -407,7 +407,7 @@ namespace HTMLTemplate
                     using var connection = new MySqlConnection($"Server={_connect}; database={_dataBase}; UID=dbuser; password=dbpassword");
                     connection.StateChange += Mysql_StateChange;
 
-                    var command = new MySqlCommand($"SELECT apt.name FROM ActionPropertyType apt JOIN ActionType at ON apt.actionType_id = at.id WHERE at.name REGEXP '{_docName}' AND at.context = '{_docContext}' AND apt.deleted = 0 ORDER BY apt.idx",
+                    var command = new MySqlCommand($"SELECT apt.name FROM ActionPropertyType apt JOIN ActionType at ON apt.actionType_id = at.id WHERE at.name REGEXP '{_docName}' AND at.code = '{_docContext}' AND apt.deleted = 0 ORDER BY apt.idx",
                         connection);
                     connection.Open();
                     var reader = command.ExecuteReader();
@@ -739,10 +739,22 @@ namespace HTMLTemplate
             //var start_code = 1;
             //var code = "13-25";
             ////const string path = @"Property.txt";
-            var insCode = $"{code}-";
-            var selCode = $"^{code}";
             try
             {
+                Query1(code, startCode);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+                Query1(code, startCode);
+            }
+
+        }
+        private static void Query1(string code, int startCode)
+        {
+            var insCode = $"{code}-";
+            var selCode = $"^{code}";
+            
                 string groupId;
                 using (var connection = new MySqlConnection($"Server={_connect}; database={_dataBase}; UID=dbuser; password=dbpassword"))
                 {
@@ -758,7 +770,7 @@ namespace HTMLTemplate
                     while ((line = sr.ReadLine()) != null)
                     {
                         var sql = "INSERT LOW_PRIORITY rbThesaurus (createDatetime, createPerson_id, modifyDatetime, modifyPerson_id, group_id, code, name, template)" +
-                        $"VALUES (NOW(), 1193, NOW(), 1193, '{groupId}', CONCAT('{insCode}', {startCode}), '{line}', '{line}');";
+                        $"VALUES (NOW(), 1, NOW(), 1, '{groupId}', CONCAT('{insCode}', {startCode}), '{line}', '%s: {line}');";
                         using var connection = new MySqlConnection($"Server={_connect}; database={_dataBase}; UID=dbuser; password=dbpassword");
                         var command = new MySqlCommand(sql, connection);
                         connection.Open();
@@ -782,11 +794,6 @@ namespace HTMLTemplate
                     }
                 }
             }
-            catch (Exception e)
-            {
-                Console.WriteLine(e.Message);
-            }
-        }
         #endregion
 
         #region Заполнение ActionPropertyType
@@ -812,7 +819,7 @@ namespace HTMLTemplate
             {
                 using var connection = new MySqlConnection($"Server={_connect}; database={_dataBase}; UID=dbuser; password=dbpassword");
                 connection.StateChange += Mysql_StateChange;
-                var command = new MySqlCommand($"SELECT at.id FROM ActionType at WHERE at.name REGEXP '{_docName}' AND at.context = '{code}' AND at.deleted = 0",
+                var command = new MySqlCommand($"SELECT at.id FROM ActionType at WHERE at.name REGEXP '{_docName}' AND at.code = '{code}' AND at.deleted = 0",
                     connection);
                 connection.Open();
                 var groupId = command.ExecuteScalar();
