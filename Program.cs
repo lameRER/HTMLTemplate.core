@@ -291,21 +291,6 @@ namespace HTMLTemplate
                 Console.WriteLine(ex);
                 throw new Exception(ex.Message);
             }
-
-            //var file = @"C:\VISTA_MED\lustik_ak\templates";
-            //if (!Directory.Exists(file)) { Directory.CreateDirectory(file); }
-            //var html = new FileStream($@"{file}\programma.html", FileMode.Create);
-            //var htmLwriter =
-            //	new StreamWriter(html, Encoding.GetEncoding("UTF-8"));
-            //foreach (var item in property)
-            //{
-            //	htmLwriter.WriteLine(item);
-            //}
-            //htmLwriter.Close();
-            //Process.Start(Environment.ExpandEnvironmentVariables(@"C:\Users\%username%\AppData\Local\Programs\Microsoft VS Code\Code.exe"),
-            //	@"C:\VISTA_MED\lustik_ak\templates\programma.html");
-            #endregion
-
         }
         #endregion
 
