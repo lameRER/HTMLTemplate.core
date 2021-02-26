@@ -923,15 +923,15 @@ namespace HTMLTemplate
                 {
                     using var connection = new MySqlConnection($"Server={_connect}; database={_dataBase}; UID=dbuser; port={_port}; password=dbpassword");
                     //  connection.StateChange += Mysql_StateChange;
-                    var command = new MySqlCommand($"SELECT pt.id, pt.`default` FROM rbPrintTemplate pt WHERE pt.deleted = 0", connection);
+                    var command = new MySqlCommand($"SELECT pt.id, pt.name, pt.`default` FROM rbPrintTemplate pt WHERE pt.deleted = 0", connection);
                     connection.Open();
                     var reader = command.ExecuteReader();
                     while (reader.Read())
                     {
                         if (!Directory.Exists(file)) { Directory.CreateDirectory(file); }
-                        var html = new FileStream($@"{file}\{reader[0]}.html", FileMode.Create);
+                        var html = new FileStream($@"{file}\{reader[0]}-{reader[1]}.html", FileMode.Create);
                         var htmLwriter = new StreamWriter(html, Encoding.GetEncoding("UTF-8"));
-                        htmLwriter.Write(reader[1]);
+                        htmLwriter.Write(reader[2]);
                         htmLwriter.Close();
                     }
                 }
