@@ -923,7 +923,7 @@ namespace HTMLTemplate
                 {
                     using var connection = new MySqlConnection($"Server={_connect}; database={_dataBase}; UID=dbuser; port={_port}; password=dbpassword");
                     //  connection.StateChange += Mysql_StateChange;
-                    var command = new MySqlCommand($"SELECT pt.id, pt.code, pt.`default` FROM rbPrintTemplate pt WHERE pt.deleted = 0", connection);
+                    var command = new MySqlCommand($"SELECT pt.id, replace(REGEXP_SUBSTR(name, '[а-яА-Я0-9-._ ]+'), '.', '_'), pt.`default` FROM rbPrintTemplate pt WHERE pt.deleted = 0", connection);
                     connection.Open();
                     var reader = command.ExecuteReader();
                     while (reader.Read())
