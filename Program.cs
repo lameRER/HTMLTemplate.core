@@ -21,6 +21,7 @@ namespace HTMLTemplate
         private const string Path = @"Property.txt";
         private static string _connect;
         private static string _dataBase;
+        private static string _port;
 
         private static void Main()
         {
@@ -49,6 +50,11 @@ namespace HTMLTemplate
             _connect = Console.ReadLine();
             Console.WriteLine("Base:");
             _dataBase = Console.ReadLine();
+            Console.WriteLine("Port:");
+            _port = Console.ReadLine();
+            // _connect = "p51vms";
+            // _dataBase = "s11";
+            // _port = "3306";
             var countries = new Dictionary<int, string>(10)
             {
                 {1, "Создание шаблона печати"},
@@ -56,7 +62,8 @@ namespace HTMLTemplate
                 {3, "Чтение шаблон печати"},
                 {4, "Cохранить шаблон печати"},
                 {5, "Заполнение rbThesaurus"},
-                {6, "Заполнение ActionPropertyType"}
+                {6, "Заполнение ActionPropertyType"},
+                {9, "Обновление списка шаблонов"}
             };
             foreach (var (key, value) in countries)
             {
@@ -92,6 +99,9 @@ namespace HTMLTemplate
                     break;
                 case 8:
                     Create_test();
+                    break;
+                case 9:
+                    Read_all();
                     break;
                 default:
                     Console.WriteLine("Значение не верно");
@@ -133,7 +143,7 @@ namespace HTMLTemplate
             var index = 0;
             if (!string.IsNullOrWhiteSpace(_docName) && !string.IsNullOrWhiteSpace(_docContext))
             {
-                using var connection = new MySqlConnection($"Server={_connect}; database={_dataBase}; UID=dbuser; password=dbpassword");
+                using var connection = new MySqlConnection($"Server={_connect}; database={_dataBase}; UID=dbuser; port={_port}; password=dbpassword");
                 connection.StateChange += Mysql_StateChange;
 
                 var command = new MySqlCommand($"SELECT at.id FROM ActionType at JOIN rbPrintTemplate pt ON at.context = pt.context WHERE at.name REGEXP '{_docName}' AND at.context = '{_docContext}' AND at.deleted = 0", connection);
@@ -145,7 +155,7 @@ namespace HTMLTemplate
                     try
                     {
                         //Thread.Sleep(1 * 30 * 1000);
-                        using var connection1 = new MySqlConnection($"Server={_connect}; database={_dataBase}; UID=dbuser; password=dbpassword");
+                        using var connection1 = new MySqlConnection($"Server={_connect}; database={_dataBase}; UID=dbuser; port={_port}; password=dbpassword");
                         var command1 = new MySqlCommand($"INSERT ActionPropertyType (actionType_id, idx, template_id, name, shortName, descr, unit_id, typeName, valueDomain, defaultValue, isVector, norm, sex, age, penalty, penaltyUserProfile, visibleInJobTicket, visibleInTableRedactor, isAssignable, test_id, defaultEvaluation, canChangeOnlyOwner, isActionNameSpecifier, laboratoryCalculator, inActionsSelectionTable, redactorSizeFactor, isFrozen, typeEditable, visibleInDR, userProfile_id, userProfileBehaviour, copyModifier, isVitalParam, vitalParamId, isODIIParam) VALUES ({groupId}, {index}, 0, '{propertyName}', '', '', null, 'String', '', '', 0, '', 0, '', 0, '', 0, 0, 0, NULL, 0, 0, 0, '', 0, 0, 0, 1, 1, NULL, 0, 0, 0, NULL, 0);", connection1);
                         connection1.Open();
                         command1.ExecuteNonQuery();
@@ -184,7 +194,7 @@ namespace HTMLTemplate
             try
             {
                 var filename = string.Empty;
-                using var connection = new MySqlConnection($"Server={_connect}; database={_dataBase}; UID=dbuser; password=dbpassword");
+                using var connection = new MySqlConnection($"Server={_connect}; database={_dataBase}; UID=dbuser; port={_port}; password=dbpassword");
                 connection.StateChange += Mysql_StateChange;
 
                 var command = new MySqlCommand($"SELECT COUNT(*) FROM ActionType at JOIN rbPrintTemplate pt ON at.context = pt.context WHERE at.context ='{docContext}' AND at.name REGEXP '{_docName}' AND at.deleted = 0",
@@ -205,7 +215,7 @@ namespace HTMLTemplate
                                     Console.WriteLine("Файл не прописан");
                                     break;
                             }
-                            using var connection1 = new MySqlConnection($"Server={_connect}; database={_dataBase}; UID=dbuser; password=dbpassword");
+                            using var connection1 = new MySqlConnection($"Server={_connect}; database={_dataBase}; UID=dbuser; port={_port}; password=dbpassword");
                             //  connection.StateChange += Mysql_StateChange;
 
                             var command1 = new MySqlCommand($"UPDATE {_dataBase}.rbPrintTemplate pt JOIN ActionType at ON at.context = pt.context set pt.`default` = '{text}', pt.fileName = '{filename}' WHERE at.name REGEXP '{_docName}' AND pt.context = '{docContext}' AND at.deleted = 0 AND pt.deleted = 0",
@@ -218,12 +228,12 @@ namespace HTMLTemplate
 
                     case 0:
                         {
-                            using var connection1 = new MySqlConnection($"Server={_connect}; database={_dataBase}; UID=dbuser; password=dbpassword");
+                            using var connection1 = new MySqlConnection($"Server={_connect}; database={_dataBase}; UID=dbuser; port={_port}; password=dbpassword");
                             //  connection.StateChange += Mysql_StateChange;
                             Console.Write("Имя документа: (Используется при создании документа)");
                             _docName = Console.ReadLine();
                             var command1 = new MySqlCommand($"INSERT {_dataBase}.rbPrintTemplate (createDatetime, createPerson_id, modifyDatetime, modifyPerson_id, code, name, context, fileName, `default`, dpdAgreement, type, hideParam, banUnkeptDate, counter_id, deleted, isPatientAgreed, groupName, documentType_id, isEditableInWeb)" +
-                                                            $"VALUES (NOW(), 1, NOW(), 1, '{docContext}', '{_docName}', '{docContext}', '', '{text}', 0, 0, 0, 2, NULL, 0, 0, '', NULL, 0);",
+                                                            $"VALUES (NOW(), NULL, NOW(), NULL, '{docContext}', '{_docName}', '{docContext}', '', '{text}', 0, 0, 0, 2, NULL, 0, 0, '', NULL, 0);",
                                 connection1);
                             connection1.Open();
                             command1.ExecuteNonQuery();
@@ -240,7 +250,7 @@ namespace HTMLTemplate
                                 Console.WriteLine("Прописать файл?");
                                 if (Console.ReadLine()?.ToUpper() == "Y") filename = $@"{docContext}.html";
 
-                                using var connection1 = new MySqlConnection($"Server={_connect}; database={_dataBase}; UID=dbuser; password=dbpassword");
+                                using var connection1 = new MySqlConnection($"Server={_connect}; database={_dataBase}; UID=dbuser; port={_port}; password=dbpassword");
                                 //  connection.StateChange += Mysql_StateChange;
 
                                 var command1 = new MySqlCommand($"UPDATE {_dataBase}.rbPrintTemplate pt JOIN ActionType at ON at.context = pt.context set pt.`default` = '{text}', pt.fileName = '{filename}' WHERE at.name REGEXP '{_docName}' AND pt.context = '{docContext}' AND at.deleted = 0 AND pt.deleted = 0",
@@ -273,7 +283,7 @@ namespace HTMLTemplate
             {
                 try
                 {
-                    using var connection = new MySqlConnection($"Server={_connect}; database={_dataBase}; UID=dbuser; password=dbpassword");
+                    using var connection = new MySqlConnection($"Server={_connect}; database={_dataBase}; UID=dbuser; port={_port}; password=dbpassword");
                     //  connection.StateChange += Mysql_StateChange;
                     var command = new MySqlCommand($"SELECT Count(*) FROM rbPrintTemplate pt JOIN ActionType at ON at.context = pt.context WHERE pt.context = '{_docContext}' AND at.deleted = 0 AND pt.deleted = 0", connection);
                     connection.Open();
@@ -282,7 +292,7 @@ namespace HTMLTemplate
                     {
                         Console.Write("Имя документа: ");
                         _docName = Console.ReadLine();
-                        using var connection1 = new MySqlConnection($"Server={_connect}; database={_dataBase}; UID=dbuser; password=dbpassword");
+                        using var connection1 = new MySqlConnection($"Server={_connect}; database={_dataBase}; UID=dbuser; port={_port}; password=dbpassword");
                         var command1 = new MySqlCommand($"SELECT pt.`default` FROM rbPrintTemplate pt JOIN ActionType at ON at.context = pt.context WHERE at.name = '{_docName}' AND pt.context = '{_docContext}' AND at.deleted = 0 AND pt.deleted = 0",
                             connection1);
                         connection1.Open();
@@ -290,7 +300,7 @@ namespace HTMLTemplate
                     }
                     else if (reader == 1)
                     {
-                        using var connection1 = new MySqlConnection($"Server={_connect}; database={_dataBase}; UID=dbuser; password=dbpassword");
+                        using var connection1 = new MySqlConnection($"Server={_connect}; database={_dataBase}; UID=dbuser; port={_port}; password=dbpassword");
                         //  connection.StateChange += Mysql_StateChange;
                         var command1 = new MySqlCommand($"SELECT pt.`default` FROM rbPrintTemplate pt JOIN ActionType at ON at.context = pt.context WHERE pt.context = '{_docContext}' AND at.deleted = 0 AND pt.deleted = 0",
                                                 connection1);
@@ -353,7 +363,7 @@ namespace HTMLTemplate
 
                 if (!string.IsNullOrWhiteSpace(_docName) && !string.IsNullOrWhiteSpace(_docContext))
                 {
-                    using var connection = new MySqlConnection($"Server={_connect}; database={_dataBase}; UID=dbuser; password=dbpassword");
+                    using var connection = new MySqlConnection($"Server={_connect}; database={_dataBase}; UID=dbuser; port={_port}; password=dbpassword");
                     connection.StateChange += Mysql_StateChange;
 
                     var command = new MySqlCommand($"SELECT apt.name FROM ActionPropertyType apt JOIN ActionType at ON apt.actionType_id = at.id WHERE at.name REGEXP '{_docName}' AND at.code = '{_docContext}' AND apt.deleted = 0 ORDER BY apt.idx",
@@ -374,12 +384,12 @@ namespace HTMLTemplate
 
                 foreach (var slova in Property)
                 {
-                    // EndText.AddRange(from t in slova
-                    //                  let flag = false
-                    //                  where flag != true
-                    //                 select "{if: prop.name ==u'" + t + "'}" + "<b>{prop.name} </b>{prop.value}{end:}<br>"+ Environment.NewLine);
+//                     EndText.AddRange(from t in slova
+//                                      let flag = false
+//                                      where flag != true
+//                                     select "{if: prop.name ==u'" + t + "'}" + "<b>{prop.name} </b>{prop.value}{end:}<br>"+ Environment.NewLine);
                     EndText.Add("				{if: prop.name == u'" + slova + "' and prop.value}" + "<br><b>{prop.name}:</b> {prop.value}{end:}" + Environment.NewLine);
-                    //  EndText.Add("<br>" + Environment.NewLine);
+//                      EndText.Add("<br>" + Environment.NewLine);
                 }
                 #region htmLwriter
                 var result = "<html>" + Environment.NewLine
@@ -453,6 +463,7 @@ namespace HTMLTemplate
                     + "			{for: prop in action}" + Environment.NewLine;
                 foreach (var item in result)
                 {
+                    Thread.Sleep(Random(Ran));
                     HtmLwriter(item);
                 }
                 #endregion                
@@ -461,6 +472,7 @@ namespace HTMLTemplate
 
                     foreach (var item in s)
                     {
+                        Thread.Sleep(Random(Ran));
                         HtmLwriter(item);
                     }
                 }
@@ -483,6 +495,7 @@ namespace HTMLTemplate
                 + "</html>" + Environment.NewLine;
                 foreach (var item in return1)
                 {
+                    Thread.Sleep(Random(Ran));
                     HtmLwriter(item);
                 }
                 #endregion
@@ -700,7 +713,7 @@ namespace HTMLTemplate
             var selCode = $"^{code}";
             
                 string groupId;
-                using (var connection = new MySqlConnection($"Server={_connect}; database={_dataBase}; UID=dbuser; password=dbpassword"))
+                using (var connection = new MySqlConnection($"Server={_connect}; database={_dataBase}; UID=dbuser; port={_port}; password=dbpassword"))
                 {
                     var sqlSel = $"SELECT t.id FROM rbThesaurus t WHERE t.code REGEXP '{selCode}';";
                     var command = new MySqlCommand(sqlSel, connection);
@@ -714,15 +727,15 @@ namespace HTMLTemplate
                     while ((line = sr.ReadLine()) != null)
                     {
                         var sql = "INSERT LOW_PRIORITY rbThesaurus (createDatetime, createPerson_id, modifyDatetime, modifyPerson_id, group_id, code, name, template)" +
-                        $"VALUES (NOW(), 1, NOW(), 1, '{groupId}', CONCAT('{insCode}', {startCode}), '{line}', '%s: {line}');";
-                        using var connection = new MySqlConnection($"Server={_connect}; database={_dataBase}; UID=dbuser; password=dbpassword");
+                        $"VALUES (NOW(), NULL, NOW(), NULL, '{groupId}', CONCAT('{insCode}', {startCode}), '{line}', '{line}');";
+                        using var connection = new MySqlConnection($"Server={_connect}; database={_dataBase}; UID=dbuser; port={_port}; password=dbpassword");
                         var command = new MySqlCommand(sql, connection);
                         connection.Open();
                         command.ExecuteNonQuery();
                         startCode++;
                     }
                 }
-                using (var connection = new MySqlConnection($"Server={_connect}; database={_dataBase}; UID=dbuser; password=dbpassword"))
+                using (var connection = new MySqlConnection($"Server={_connect}; database={_dataBase}; UID=dbuser; port={_port}; password=dbpassword"))
                 {
                     var sqlSel = $"SELECT * FROM rbThesaurus t WHERE t.code REGEXP '{selCode}';";
                     var command = new MySqlCommand(sqlSel, connection);
@@ -761,7 +774,7 @@ namespace HTMLTemplate
         {
             using (var sr = new StreamReader(Path, Encoding.Default))
             {
-                using var connection = new MySqlConnection($"Server={_connect}; database={_dataBase}; UID=dbuser; password=dbpassword");
+                using var connection = new MySqlConnection($"Server={_connect}; database={_dataBase}; UID=dbuser; port={_port}; password=dbpassword");
                 connection.StateChange += Mysql_StateChange;
                 var command = new MySqlCommand($"SELECT at.id FROM ActionType at WHERE at.name REGEXP '{_docName}' AND at.code = '{code}' AND at.deleted = 0",
                     connection);
@@ -775,14 +788,14 @@ namespace HTMLTemplate
 
                     //var sql = $"INSERT ActionPropertyType (deleted, actionType_id, idx, template_id, name, shortName, descr, unit_id, typeName, valueDomain, defaultValue, isVector, norm, sex, age, penalty, penaltyUserProfile, visibleInJobTicket, visibleInTableRedactor, isAssignable, test_id, defaultEvaluation, canChangeOnlyOwner, isActionNameSpecifier, laboratoryCalculator, inActionsSelectionTable, redactorSizeFactor, isFrozen, typeEditable, visibleInDR, userProfile_id, userProfileBehaviour, copyModifier, isVitalParam, vitalParamId, isODIIParam) SELECT apt.deleted, apt.actionType_id, {start_code}, apt.template_id, '{line}', apt.shortName, apt.descr, apt.unit_id, apt.typeName, apt.valueDomain, apt.defaultValue, apt.isVector, apt.norm, apt.sex, apt.age, apt.penalty, apt.penaltyUserProfile, apt.visibleInJobTicket, apt.visibleInTableRedactor, apt.isAssignable, apt.test_id, apt.defaultEvaluation, apt.canChangeOnlyOwner, apt.isActionNameSpecifier, apt.laboratoryCalculator, apt.inActionsSelectionTable, apt.redactorSizeFactor, apt.isFrozen, apt.typeEditable, apt.visibleInDR, apt.userProfile_id, apt.userProfileBehaviour, apt.copyModifier, apt.isVitalParam, apt.vitalParamId, apt.isODIIParam FROM ActionPropertyType apt WHERE apt.actionType_id = (SELECT at.id FROM ActionType at WHERE at.code = '{code}') AND apt.idx = 0 AND apt.deleted = 0";
                     var sql = $"INSERT ActionPropertyType (actionType_id, idx, template_id, name, shortName, descr, unit_id, typeName, valueDomain, defaultValue, isVector, norm, sex, age, penalty, penaltyUserProfile, visibleInJobTicket, visibleInTableRedactor, isAssignable, test_id, defaultEvaluation, canChangeOnlyOwner, isActionNameSpecifier, laboratoryCalculator, inActionsSelectionTable, redactorSizeFactor, isFrozen, typeEditable, visibleInDR, userProfile_id, userProfileBehaviour, copyModifier, isVitalParam, vitalParamId, isODIIParam) VALUES ({groupId}, {startCode}, 0, '{line}', '', '', null, 'String', '', '', 0, '', 0, '', 0, '', 0, 0, 0, NULL, 0, 0, 0, '', 0, 0, 0, 1, 1, NULL, 0, 0, 0, NULL, 0);";
-                    using var connection1 = new MySqlConnection($"Server={_connect}; database={_dataBase}; UID=dbuser; password=dbpassword");
+                    using var connection1 = new MySqlConnection($"Server={_connect}; database={_dataBase}; UID=dbuser; port={_port}; password=dbpassword");
                     var command1 = new MySqlCommand(sql, connection1);
                     connection1.Open();
                     command1.ExecuteNonQuery();
                     startCode++;
                 }
             }
-            using (var connection1 = new MySqlConnection($"Server={_connect}; database={_dataBase}; UID=dbuser; password=dbpassword"))
+            using (var connection1 = new MySqlConnection($"Server={_connect}; database={_dataBase}; UID=dbuser; port={_port}; password=dbpassword"))
             {
                 var sqlSel = $"SELECT * FROM ActionPropertyType apt WHERE apt.actionType_id = (SELECT at.id FROM ActionType at WHERE at.code = '{code}') AND apt.deleted=0 ORDER BY apt.idx DESC";
                 var command1 = new MySqlCommand(sqlSel, connection1);
@@ -818,13 +831,13 @@ namespace HTMLTemplate
                     {
                         //Thread.Sleep(30 * 1000);
                         var sql = $"INSERT LOW_PRIORITY OrgStructure (createDatetime, createPerson_id, modifyDatetime, modifyPerson_id, deleted, organisation_id, code, name, parent_id, type, net_id, chief_id, headNurse_id, isArea, hasHospitalBeds, hasStocks, hasDayStationary, infisCode, infisInternalCode, infisDepTypeCode, availableForExternal, Address, infisTariffCode, inheritEventTypes, inheritActionTypes, inheritGaps, bookkeeperCode, dayLimit, storageCode, salaryPercentage, attachCode, isVisibleInDR, tfomsCode, syncGUID, quota, miacCode, netrica_Code, idLPU_egisz, netrica_Code_UO, netrica_Code_IEMK) VALUES (NOW(), 1193, NOW(), 1193, 0, 0, '{line}', '{line}', 167, 0, NULL, NULL, NULL, 0, 0, 0, 0, '', '', '', 0, '', '', 0, 0, 0, '', 0, '', 0, 0, 1, NULL, '', 0, '', '', NULL, '', NULL);";
-                        using var connection = new MySqlConnection($"Server={_connect}; database={_dataBase}; UID=dbuser; password=dbpassword");
+                        using var connection = new MySqlConnection($"Server={_connect}; database={_dataBase}; UID=dbuser; port={_port}; password=dbpassword");
                         var command = new MySqlCommand(sql, connection);
                         connection.Open();
                         command.ExecuteNonQuery();
                     }
                 }
-                using (var connection = new MySqlConnection($"Server={_connect}; database={_dataBase}; UID=dbuser; password=dbpassword"))
+                using (var connection = new MySqlConnection($"Server={_connect}; database={_dataBase}; UID=dbuser; port={_port}; password=dbpassword"))
                 {
                     const string sqlSel = "SELECT * FROM OrgStructure os WHERE os.parent_id = (SELECT os1.id FROM OrgStructure os1 WHERE os1.name REGEXP 'ручной');";
                     var command = new MySqlCommand(sqlSel, connection);
@@ -846,6 +859,33 @@ namespace HTMLTemplate
             }
         }
         #endregion
+        #region Чтение шаблонов печати
+        private static void Read_all()
+        {
+            const string file = @"C:\VISTA_MED\lustik_ak\templates";
+                try
+                {
+                    using var connection = new MySqlConnection($"Server={_connect}; database={_dataBase}; UID=dbuser; port={_port}; password=dbpassword");
+                    //  connection.StateChange += Mysql_StateChange;
+                    var command = new MySqlCommand($"SELECT pt.id, replace(REGEXP_SUBSTR(name, '[а-яА-Я0-9-._ ]+'), '.', '_'), pt.`default` FROM rbPrintTemplate pt WHERE pt.deleted = 0", connection);
+                    connection.Open();
+                    var reader = command.ExecuteReader();
+                    while (reader.Read())
+                    {
+                        if (!Directory.Exists(file)) { Directory.CreateDirectory(file); }
+                        var html = new FileStream($@"{file}\{reader[0]}_{reader[1]}.html", FileMode.Create);
+                        var htmLwriter = new StreamWriter(html, Encoding.GetEncoding("UTF-8"));
+                        htmLwriter.Write(reader[2]);
+                        htmLwriter.Close();
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex);
+                }
+        }
+        #endregion
+
         private static void Mysql_StateChange(object sender, StateChangeEventArgs e)
         {
             Console.WriteLine($"Mysql Connect: {e.CurrentState}");
