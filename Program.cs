@@ -37,7 +37,11 @@ namespace HTMLTemplate
         }
         private static int Random(Random ran)
         {
-            return ran.Next(100, 100);
+            #if DEBUG
+                return ran.Next(100, 200);
+            #else
+                return ran.Next(10, 100);
+            #endif
         }
 
         private static void Consol()
