@@ -11,7 +11,7 @@ using System.Threading;
 
 namespace HTMLTemplate
 {
-    internal class Program
+    internal static class Program
     {
         private static readonly Random Ran = new Random();
         private static readonly List<string> EndText = new List<string>();
@@ -65,10 +65,7 @@ namespace HTMLTemplate
                 {6, "Заполнение ActionPropertyType"},
                 {9, "Обновление списка шаблонов"}
             };
-            foreach (var (key, value) in countries)
-            {
-                Console.WriteLine($"{key}. {value}");
-            }
+            foreach (var (key, value) in countries) Console.WriteLine($"{key}. {value}");
             Console.Write("Value: ");
             //system.Console.WriteLine("1. Создание шаблона печати\n");
             switch (Convert.ToInt32(Console.ReadLine()))
@@ -116,10 +113,7 @@ namespace HTMLTemplate
             using (var streamReader = new StreamReader(fs, Encoding.UTF8))
             {
                 var listPropertyName = streamReader.ReadToEnd().Split((char)13);
-                foreach (var propertyName in listPropertyName.Where(x => x.Contains(':')))
-                {
-                    Property.Add(propertyName.Substring(0, propertyName.LastIndexOf(':') + 1).Trim());
-                }
+                foreach (var propertyName in listPropertyName.Where(x => x.Contains(':'))) Property.Add(propertyName.Substring(0, propertyName.LastIndexOf(':') + 1).Trim());
             }
             foreach (var item in Property)
             {
@@ -151,7 +145,6 @@ namespace HTMLTemplate
                 var groupId = command.ExecuteScalar();
                 Console.WriteLine("Run...");
                 foreach (var propertyName in Property)
-                {
                     try
                     {
                         //Thread.Sleep(1 * 30 * 1000);
@@ -165,7 +158,6 @@ namespace HTMLTemplate
                     {
                         Console.WriteLine(ex);
                     }
-                }
             }
             else
             {
@@ -280,11 +272,10 @@ namespace HTMLTemplate
             Console.Write("Код документа: ");
             _docContext = Console.ReadLine();
             if (!string.IsNullOrWhiteSpace(_docContext))
-            {
                 try
                 {
                     using var connection = new MySqlConnection($"Server={_connect}; database={_dataBase}; UID=dbuser; port={_port}; password=dbpassword");
-                    //  connection.StateChange += Mysql_StateChange;
+                    connection.StateChange += Mysql_StateChange;
                     var command = new MySqlCommand($"SELECT Count(*) FROM rbPrintTemplate pt JOIN ActionType at ON at.context = pt.context WHERE pt.context = '{_docContext}' AND at.deleted = 0 AND pt.deleted = 0", connection);
                     connection.Open();
                     var reader = Convert.ToInt64(command.ExecuteScalar());
@@ -301,9 +292,9 @@ namespace HTMLTemplate
                     else if (reader == 1)
                     {
                         using var connection1 = new MySqlConnection($"Server={_connect}; database={_dataBase}; UID=dbuser; port={_port}; password=dbpassword");
-                        //  connection.StateChange += Mysql_StateChange;
+                        connection.StateChange += Mysql_StateChange;
                         var command1 = new MySqlCommand($"SELECT pt.`default` FROM rbPrintTemplate pt JOIN ActionType at ON at.context = pt.context WHERE pt.context = '{_docContext}' AND at.deleted = 0 AND pt.deleted = 0",
-                                                connection1);
+                            connection1);
                         connection1.Open();
                         Property.Add((string)command1.ExecuteScalar());
                     }
@@ -312,28 +303,20 @@ namespace HTMLTemplate
                 {
                     Console.WriteLine(ex);
                 }
-            }
             else
-            {
                 throw new ArgumentNullException(nameof(Create));
-            }
+
             const string file = @"C:\VISTA_MED\lustik_ak\templates";
-            if (!Directory.Exists(file)) { Directory.CreateDirectory(file); }
+            if (!Directory.Exists(file)) Directory.CreateDirectory(file);
             var html = new FileStream($@"{file}\{_docContext}.html", FileMode.Create);
             var htmLwriter =
                 new StreamWriter(html, Encoding.GetEncoding("UTF-8"));
-            foreach (var item in Property)
-            {
-                htmLwriter.Write(item);
-            }
+            foreach (var item in Property) htmLwriter.Write(item);
             htmLwriter.Close();
             Process.Start(Environment.ExpandEnvironmentVariables(@"C:\Users\%username%\AppData\Local\Programs\Microsoft VS Code\Code.exe"),
                 $@"C:\VISTA_MED\lustik_ak\templates\{_docContext}.html");
             Console.Write("Сохранить шаблон?");
-            if (Console.ReadLine() == "y" || Console.ReadLine() == "Y")
-            {
-                Write(_docContext);
-            }
+            if (Console.ReadLine() == "y" || Console.ReadLine() == "Y") Write(_docContext);
         }
         #endregion
 
@@ -350,7 +333,7 @@ namespace HTMLTemplate
                 _docContext = Console.ReadLine();
                 var file = @"C:\VISTA_MED\lustik_ak\templates";
                 //var slovar =File.ReadAllLines("Slovar.txt",	Encoding.GetEncoding("windows-1251")); // Создаю массив и считываю все что находится в файле  
-                if (!Directory.Exists(file)) { Directory.CreateDirectory(file); }
+                if (!Directory.Exists(file)) Directory.CreateDirectory(file);
                 var html = new FileStream($@"{file}\{_docContext}.html", FileMode.Create); //создаем файловый поток
                 var htmLwriterCreate =
                     new StreamWriter(html, Encoding.GetEncoding("UTF-8")); // соединяем файловый поток с "Потоковым писателем"
@@ -372,10 +355,8 @@ namespace HTMLTemplate
                     var reader = command.ExecuteReader();
                     Console.WriteLine("Run...");
                     while (reader.Read())
-                    {
                         Property.Add(reader[0].ToString());
-                        //Property.Add(reader[1].ToString());
-                    }
+                    //Property.Add(reader[1].ToString());
                 }
                 else
                 {
@@ -383,14 +364,12 @@ namespace HTMLTemplate
                 }
 
                 foreach (var slova in Property)
-                {
-//                     EndText.AddRange(from t in slova
+                //                     EndText.AddRange(from t in slova
 //                                      let flag = false
 //                                      where flag != true
 //                                     select "{if: prop.name ==u'" + t + "'}" + "<b>{prop.name} </b>{prop.value}{end:}<br>"+ Environment.NewLine);
                     EndText.Add("				{if: prop.name == u'" + slova + "' and prop.value}" + "<br><b>{prop.name}:</b> {prop.value}{end:}" + Environment.NewLine);
 //                      EndText.Add("<br>" + Environment.NewLine);
-                }
                 #region htmLwriter
                 var result = "<html>" + Environment.NewLine
                     + "" + Environment.NewLine
@@ -467,32 +446,29 @@ namespace HTMLTemplate
                     HtmLwriter(item);
                 }
                 #endregion                
-                foreach (var s in EndText)
+                foreach (var item in EndText.SelectMany(s => s))
                 {
-
-                    foreach (var item in s)
-                    {
-                        Thread.Sleep(Random(Ran));
-                        HtmLwriter(item);
-                    }
+                    Thread.Sleep(Random(Ran));
+                    HtmLwriter(item);
                 }
+
                 #region htmLwriter2
-                string return1 = "			{end:}" + Environment.NewLine
-                + "		</div>" + Environment.NewLine
-                + "	</div>" + Environment.NewLine
-                + "	<br>" + Environment.NewLine
-                + "	<div class=\"signature\">" + Environment.NewLine
-                + "		<table width=\"100%\" border=\"0\">" + Environment.NewLine
-                + "			<tr>" + Environment.NewLine
-                + "				<td><b>Врач {action.person.speciality}:</b> </td>" + Environment.NewLine
-                + "				<td align=\"right\">{action.person.shortName}</td>" + Environment.NewLine
-                + "			</tr>" + Environment.NewLine
-                + "		</table>" + Environment.NewLine
-                + "	</div>" + Environment.NewLine
-                + "	{end:}" + Environment.NewLine
-                + "</body>" + Environment.NewLine
-                + "" + Environment.NewLine
-                + "</html>" + Environment.NewLine;
+                var return1 = "			{end:}" + Environment.NewLine
+                                          + "		</div>" + Environment.NewLine
+                                          + "	</div>" + Environment.NewLine
+                                          + "	<br>" + Environment.NewLine
+                                          + "	<div class=\"signature\">" + Environment.NewLine
+                                          + "		<table width=\"100%\" border=\"0\">" + Environment.NewLine
+                                          + "			<tr>" + Environment.NewLine
+                                          + "				<td><b>Врач {action.person.speciality}:</b> </td>" + Environment.NewLine
+                                          + "				<td align=\"right\">{action.person.shortName}</td>" + Environment.NewLine
+                                          + "			</tr>" + Environment.NewLine
+                                          + "		</table>" + Environment.NewLine
+                                          + "	</div>" + Environment.NewLine
+                                          + "	{end:}" + Environment.NewLine
+                                          + "</body>" + Environment.NewLine
+                                          + "" + Environment.NewLine
+                                          + "</html>" + Environment.NewLine;
                 foreach (var item in return1)
                 {
                     Thread.Sleep(Random(Ran));
@@ -502,16 +478,13 @@ namespace HTMLTemplate
                 Console.WriteLine(Environment.ExpandEnvironmentVariables(@"C:\Users\%USERNAME%\AppData\Local\Programs\Microsoft VS Code\Code.exe"));
                 Process.Start(Environment.ExpandEnvironmentVariables(@"C:\Users\%username%\AppData\Local\Programs\Microsoft VS Code\Code.exe"),
                     $@"C:\VISTA_MED\lustik_ak\templates\{_docContext}.html");
-                eventclass.Select(MethodBase.GetCurrentMethod().Name);
+                eventclass.Select(MethodBase.GetCurrentMethod()?.Name);
                 Console.Write("Сохранить шаблон?");
-                if (Console.ReadLine() == "y" || Console.ReadLine() == "Y")
-                {
-                    Write(_docContext);
-                }
+                if (Console.ReadLine() == "y" || Console.ReadLine() == "Y") Write(_docContext);
             }
             catch (Exception e)
             {
-                eventclass.Error(MethodBase.GetCurrentMethod().Name, e);
+                eventclass.Error(MethodBase.GetCurrentMethod()?.Name, e);
                 Console.ReadKey();
             }
         }
@@ -529,7 +502,7 @@ namespace HTMLTemplate
                 _docContext = Console.ReadLine();
                 const string file = @"C:\VISTA_MED\lustik_ak\templates";
                 //var slovar =File.ReadAllLines("Slovar.txt",	Encoding.GetEncoding("windows-1251")); // Создаю массив и считываю все что находится в файле  
-                if (!Directory.Exists(file)) { Directory.CreateDirectory(file); }
+                if (!Directory.Exists(file)) Directory.CreateDirectory(file);
                 var html = new FileStream($@"{file}\{_docContext}.html", FileMode.Create); //создаем файловый поток
                 var htmLwriterCreate =
                     new StreamWriter(html, Encoding.GetEncoding("UTF-8")); // соединяем файловый поток с "Потоковым писателем"
@@ -546,10 +519,7 @@ namespace HTMLTemplate
                     using (var streamReader = new StreamReader(fs, Encoding.UTF8))
                     {
                         var listPropertyName = streamReader.ReadToEnd().Split((char)13);
-                        foreach (var propertyName in listPropertyName.Where(x => x.Contains(':')))
-                        {
-                            Property.Add(propertyName.Substring(0, propertyName.LastIndexOf(':') + 1).Trim());
-                        }
+                        foreach (var propertyName in listPropertyName.Where(x => x.Contains(':'))) Property.Add(propertyName.Substring(0, propertyName.LastIndexOf(':') + 1).Trim());
                     }
                     foreach (var item in Property)
                     {
@@ -564,14 +534,12 @@ namespace HTMLTemplate
                 }
 
                 foreach (var slova in Property)
-                {
-                    // EndText.AddRange(from t in slova
-                    //                  let flag = false
-                    //                  where flag != true
-                    //                 select "{if: prop.name ==u'" + t + "'}" + "<b>{prop.name} </b>{prop.value}{end:}<br>"+ Environment.NewLine);
+                // EndText.AddRange(from t in slova
+                //                  let flag = false
+                //                  where flag != true
+                //                 select "{if: prop.name ==u'" + t + "'}" + "<b>{prop.name} </b>{prop.value}{end:}<br>"+ Environment.NewLine);
                     EndText.Add("				{if: prop.name == u'" + slova + "' and prop.value}" + "<br><b>{prop.name}:</b> {prop.value}{end:}" + Environment.NewLine);
-                    //  EndText.Add("<br>" + Environment.NewLine);
-                }
+                //  EndText.Add("<br>" + Environment.NewLine);
                 #region htmLwriter
                 var result = "<html>" + Environment.NewLine
                     + "" + Environment.NewLine
@@ -642,15 +610,11 @@ namespace HTMLTemplate
                     + "		</div>" + Environment.NewLine
                     + "		<div class=\"ActionProperty\">" + Environment.NewLine
                     + "			{for: prop in action}" + Environment.NewLine;
-                foreach (var item in result)
-                {
-                    HtmLwriter(item);
-                }
+                foreach (var item in result) HtmLwriter(item);
+
                 #endregion
-                foreach (var item in EndText.SelectMany(s => s))
-                {
-                    HtmLwriter(item);
-                }
+                foreach (var item in EndText.SelectMany(s => s)) HtmLwriter(item);
+
                 #region htmLwriter2
                 var return1 = "			{end:}" + Environment.NewLine
                                           + "		</div>" + Environment.NewLine
@@ -668,24 +632,19 @@ namespace HTMLTemplate
                                           + "</body>" + Environment.NewLine
                                           + "" + Environment.NewLine
                                           + "</html>" + Environment.NewLine;
-                foreach (var item in return1)
-                {
-                    HtmLwriter(item);
-                }
+                foreach (var item in return1) HtmLwriter(item);
+
                 #endregion
                 Console.WriteLine(Environment.ExpandEnvironmentVariables(@"C:\Users\%USERNAME%\AppData\Local\Programs\Microsoft VS Code\Code.exe"));
                 Process.Start(Environment.ExpandEnvironmentVariables(@"C:\Users\%username%\AppData\Local\Programs\Microsoft VS Code\Code.exe"),
                     $@"C:\VISTA_MED\lustik_ak\templates\{_docContext}.html");
-                eventclass.Select(MethodBase.GetCurrentMethod().Name);
+                eventclass.Select(MethodBase.GetCurrentMethod()?.Name);
                 Console.Write("Сохранить шаблон?");
-                if (Console.ReadLine() == "y" || Console.ReadLine() == "Y")
-                {
-                    Write(_docContext);
-                }
+                if (Console.ReadLine() == "y" || Console.ReadLine() == "Y") Write(_docContext);
             }
             catch (Exception e)
             {
-                eventclass.Error(MethodBase.GetCurrentMethod().Name, e);
+                eventclass.Error(MethodBase.GetCurrentMethod()?.Name, e);
                 Console.ReadKey();
             }
         }
@@ -743,14 +702,11 @@ namespace HTMLTemplate
                     var reader = command.ExecuteReader();
                     while (reader.Read())
                     {
-                        for (var i = 0; i <= 8; i++)
-                        {
-                            Console.Write($"{reader[i]} ");
-                        }
+                        for (var i = 0; i <= 8; i++) Console.Write($"{reader[i]} ");
                         Console.WriteLine();
                     }
                 }
-            }
+        }
         #endregion
 
         #region Заполнение ActionPropertyType
@@ -803,10 +759,7 @@ namespace HTMLTemplate
                 var reader = command1.ExecuteReader();
                 while (reader.Read())
                 {
-                    for (var i = 0; i <= 9; i++)
-                    {
-                        Console.Write($"{reader[i]} ");
-                    }
+                    for (var i = 0; i <= 9; i++) Console.Write($"{reader[i]} ");
                     Console.WriteLine();
                 }
 
@@ -845,10 +798,7 @@ namespace HTMLTemplate
                     var reader = command.ExecuteReader();
                     while (reader.Read())
                     {
-                        for (var i = 0; i <= 9; i++)
-                        {
-                            Console.Write($"{reader[i]} ");
-                        }
+                        for (var i = 0; i <= 9; i++) Console.Write($"{reader[i]} ");
                         Console.WriteLine();
                     }
                 }
@@ -863,26 +813,26 @@ namespace HTMLTemplate
         private static void Read_all()
         {
             const string file = @"C:\VISTA_MED\lustik_ak\templates";
-                try
+            try
+            {
+                using var connection = new MySqlConnection($"Server={_connect}; database={_dataBase}; UID=dbuser; port={_port}; password=dbpassword");
+                //  connection.StateChange += Mysql_StateChange;
+                var command = new MySqlCommand($"SELECT pt.id, replace(REGEXP_SUBSTR(name, '[а-яА-Я0-9-._ ]+'), '.', '_'), pt.`default` FROM rbPrintTemplate pt WHERE pt.deleted = 0", connection);
+                connection.Open();
+                var reader = command.ExecuteReader();
+                while (reader.Read())
                 {
-                    using var connection = new MySqlConnection($"Server={_connect}; database={_dataBase}; UID=dbuser; port={_port}; password=dbpassword");
-                    //  connection.StateChange += Mysql_StateChange;
-                    var command = new MySqlCommand($"SELECT pt.id, replace(REGEXP_SUBSTR(name, '[а-яА-Я0-9-._ ]+'), '.', '_'), pt.`default` FROM rbPrintTemplate pt WHERE pt.deleted = 0", connection);
-                    connection.Open();
-                    var reader = command.ExecuteReader();
-                    while (reader.Read())
-                    {
-                        if (!Directory.Exists(file)) { Directory.CreateDirectory(file); }
-                        var html = new FileStream($@"{file}\{reader[0]}_{reader[1]}.html", FileMode.Create);
-                        var htmLwriter = new StreamWriter(html, Encoding.GetEncoding("UTF-8"));
-                        htmLwriter.Write(reader[2]);
-                        htmLwriter.Close();
-                    }
+                    if (!Directory.Exists(file)) Directory.CreateDirectory(file);
+                    var html = new FileStream($@"{file}\{reader[0]}_{reader[1]}.html", FileMode.Create);
+                    var htmLwriter = new StreamWriter(html, Encoding.GetEncoding("UTF-8"));
+                    htmLwriter.Write(reader[2]);
+                    htmLwriter.Close();
                 }
-                catch (Exception ex)
-                {
-                    Console.WriteLine(ex);
-                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex);
+            }
         }
         #endregion
 
