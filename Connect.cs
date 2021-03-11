@@ -15,6 +15,7 @@ namespace HTMLTemplate
         private string _password;
         private SqlOptions _sqlOptions;
 
+        [JsonPropertyName("mysqlOptions")]
         public SqlOptions SqlOption
         {
             get => _sqlOptions;
@@ -72,17 +73,6 @@ namespace HTMLTemplate
         public Connect()
         {
             
-        }
-        public Connect(SqlOptions sqlOptions, string server, int port, string driver, string name, string database, string username, string password)
-        {
-            SqlOption = sqlOptions;
-            Server = server;
-            Port = port;
-            Driver = driver;
-            Name = name;
-            Database = database;
-            Username = username;
-            Password = password;
         }
     }
 }
