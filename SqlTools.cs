@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Text.Json;
 using System.Text.Json.Serialization;
 
 
@@ -8,18 +9,17 @@ namespace HTMLTemplate
     [Serializable]
     public class SqlTools
     {
-        private Connect _connect;
 
         [JsonPropertyName("sqltools.connections")]
         public List<Connect> Connections { get; set; }
 
         public SqlTools()
         {
+            
         }
-        
-        public SqlTools(Connect connect)
+        public static SqlTools SqlToolsDeserialize(string getSettingsFile)
         {
-            _connect = connect;
+            return JsonSerializer.Deserialize<SqlTools>(getSettingsFile);
         }
     }
 }
