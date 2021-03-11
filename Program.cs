@@ -27,7 +27,7 @@ namespace HTMLTemplate
             {
                 var jsonConnect = SqlTools.SqlToolsDeserialize(GetSettingsFile());
                 Console.WriteLine("Выберите подключение: ");
-                for (var i = 0; i < jsonConnect.Connections.Count; i++) Console.WriteLine("{0}. {1}", i+1, jsonConnect.Connections[i].Server);
+                for (var i = 0; i < jsonConnect.Connections.Count; i++) Console.WriteLine("{0}. {1}", i+1, jsonConnect.Connections[i].Name);
                 StartUp(jsonConnect.Connections[Convert.ToInt32(Console.ReadLine())-1]);
             }
             catch (Exception e)
