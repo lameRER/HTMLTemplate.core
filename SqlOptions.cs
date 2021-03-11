@@ -15,9 +15,9 @@ namespace HTMLTemplate
             set => _authProtocol = value;
         }
 
-        public SqlOptions(string authProtocol)
+        public SqlOptions()
         {
-            AuthProtocol = authProtocol;
+            
         }
     }
 }
