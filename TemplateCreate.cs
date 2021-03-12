@@ -13,7 +13,7 @@ namespace HTMLTemplate
             var property = new List<string>();
             try
             {
-                using var file = new TemplateFile();
+                var file = new TemplateFile();
                 var sqlSelect = $"SELECT apt.name FROM ActionPropertyType apt " +
                                 $"JOIN ActionType at ON apt.actionType_id = at.id " +
                                 $"WHERE at.name REGEXP '{file.FileName}' AND at.code = '{file.FileCode}' AND apt.deleted = 0 ORDER BY apt.idx";

@@ -1,10 +1,11 @@
 using System;
+using System.Data.Common;
 using System.Reflection;
 using MySql.Data.MySqlClient;
 
 namespace HTMLTemplate
 {
-    public class SqlSelect
+    public class SqlSelect 
     {
         private SqlConnect _connect;
         private MySqlDataReader _reader;
@@ -55,9 +56,5 @@ namespace HTMLTemplate
         }
 
         private MySqlCommand SqlCommand(string sqlSelect, MySqlConnection sqlConnection) => new MySqlCommand(sqlSelect, sqlConnection);
-        public void Dispose()
-        {
-            throw new NotImplementedException();
-        }
     }
 }
