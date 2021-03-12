@@ -1,4 +1,6 @@
 using System;
+using System.Data;
+using System.Reflection;
 
 namespace HTMLTemplate
 {
@@ -8,17 +10,41 @@ namespace HTMLTemplate
 
         public EventClass()
         {
-            Console.WriteLine("Start Event");
+            Notify += EventClass.event_Notify;
+            // Console.WriteLine("Start Event");
         }
         public void Select(string value)
         {
-            Notify?.Invoke(this, new MyEventArgs($"{value}: Ok"));
+            Notify?.Invoke(this, new MyEventArgs($"[OK] {value}"));
         }
         public void Error(string value, Exception exception)
         {
-            Notify?.Invoke(this, new MyEventArgs($"{value}: {exception}"));
+            Notify?.Invoke(this, new MyEventArgs($"[ERROR] {value}: {exception}"));
+        }
+        
+        public static void Mysql_StateChange(object sender, StateChangeEventArgs e)
+        {
+            Console.ResetColor();
+            Console.Write("Mysql Connect: ");
+            if (e.CurrentState == ConnectionState.Open) Console.ForegroundColor = ConsoleColor.Green;
+            else if (e.CurrentState == ConnectionState.Connecting) Console.ForegroundColor = ConsoleColor.Yellow;
+            else if (e.CurrentState == ConnectionState.Closed) Console.ForegroundColor = ConsoleColor.Red;
+            else Console.ResetColor();
+            Console.WriteLine(e.CurrentState);
         }
 
+        private static void event_Notify(object sender, MyEventArgs e)
+        {
+            var text = e.GetInfo().Split(" ");
+            Console.ForegroundColor = text[0].ToUpper() == "[OK]" ? ConsoleColor.Green : ConsoleColor.Red;
+            foreach (var variable in e.GetInfo().Split(" "))
+            {
+                Console.Write(variable);
+                Console.Write(" ");
+                Console.ResetColor();
+            }
+            Console.WriteLine();
+        }
     }   
     public class MyEventArgs : EventArgs
     {
