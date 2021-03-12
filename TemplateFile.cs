@@ -8,6 +8,7 @@ namespace HTMLTemplate
     public class TemplateFile : IDisposable
     {
         private string _directoryFile;
+        private string _directoryTemplate;
         private string _fileName;
         private string _fileCode;
 
@@ -18,6 +19,16 @@ namespace HTMLTemplate
             {
                 if (value == null) throw new ArgumentNullException(nameof(value));
                 _directoryFile = value ?? throw new ArgumentNullException(nameof(value));
+            }
+        }
+
+        public string DirectoryTemplate
+        {
+            get => _directoryTemplate;
+            private set
+            {
+                if (value == null) throw new ArgumentNullException(nameof(value));
+                _directoryTemplate = value ?? throw new ArgumentNullException(nameof(value));
             }
         }
 
@@ -49,9 +60,10 @@ namespace HTMLTemplate
                 var systemVariables = new SystemVariables();
                 FileName = GetFileName();
                 FileCode = GetFileCode();
-                DirectoryFile = GetFile(systemVariables.UserName, FileCode, FileName);
+                DirectoryTemplate = GetDirectory(systemVariables.UserName);
+                DirectoryFile = GetFile(DirectoryTemplate, FileCode, FileName);
                 eventclass.Select(MethodBase.GetCurrentMethod()?.ReflectedType?.Name);
-                Create(DirectoryFile);
+                Create(DirectoryTemplate);
                 WriteFile(DirectoryFile);
             }
             catch (Exception e)
@@ -66,15 +78,20 @@ namespace HTMLTemplate
             var htmlWriterCreate = new StreamWriter(html, Encoding.GetEncoding("UTF-8")); // соединяем файловый поток с "Потоковым писателем"
             htmlWriterCreate.Close();
         }
-        private static string GetFile(string getUserName, string docContext, string docName)
+
+        private static string GetDirectory(string getUserName)
         {
-            return @$"C:\VISTA_MED\{getUserName}\templates\{docContext}_{docName}.html";
+            return $@"C:\VISTA_MED\{getUserName}\templates\";
+        }
+        private static string GetFile(string getDirectory, string docContext, string docName)
+        {
+            return $@"{getDirectory}{docContext}_{docName}.html";
             // return Environment.ExpandEnvironmentVariables($@"%HOME%/VISTA_MED/{getUserName}/templates/{docContext}_{docName}.html");
         }
 
-        private static void Create(string file)
+        private static void Create(string directory)
         {
-            if (FileExist(file)) Directory.CreateDirectory(file);
+            if (FileExist(directory)) Directory.CreateDirectory(directory);
         }
 
         private static bool FileExist(string file)
