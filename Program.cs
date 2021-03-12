@@ -26,8 +26,8 @@ namespace HTMLTemplate
             try
             {
                 var jsonConnect = SqlTools.SqlToolsDeserialize(GetSettingsFile());
-                Console.WriteLine("Выберите подключение: ");
                 for (var i = 0; i < jsonConnect.Connections.Count; i++) Console.WriteLine("{0}. {1}", i+1, jsonConnect.Connections[i].Name);
+                Console.Write("Выберите подключение: ");
                 StartUp(jsonConnect.Connections[Convert.ToInt32(Console.ReadLine())-1]);
             }
             catch (Exception e)
@@ -62,7 +62,7 @@ namespace HTMLTemplate
             #endif
         }
 
-        private static void StartUp(Connect connect)
+        private static void StartUp(SqlConnect connect)
         {
             var countries = new Dictionary<int, string>(10)
             {
@@ -79,7 +79,8 @@ namespace HTMLTemplate
             switch (Convert.ToInt32(Console.ReadLine()))
             {
                 case 1:
-                    Create(connect);
+                    new TemplateCreate(connect);
+                    // Create(connect);
                     break;
                 case 2:
                     ReadFile(connect);
@@ -114,7 +115,7 @@ namespace HTMLTemplate
             }
         }
         #region Чтение полей из файла
-        private static void ReadFile(Connect connect)
+        private static void ReadFile(SqlConnect connect)
         {
             Property.Clear();
             using var fs = new FileStream("Property.txt", FileMode.OpenOrCreate, FileAccess.Read);
@@ -132,7 +133,7 @@ namespace HTMLTemplate
             if (Console.ReadLine()?.ToUpper() == "Y") Insert(connect);
         }
 
-        private static void Insert(Connect connect)
+        private static void Insert(SqlConnect connect)
         {
             if (!string.IsNullOrWhiteSpace(_docName) && !string.IsNullOrWhiteSpace(_docContext))
             {
@@ -176,7 +177,7 @@ namespace HTMLTemplate
         #endregion
 
         #region Cохранить шаблон печати
-        private static void Write(string docContext, Connect connect)
+        private static void Write(string docContext, SqlConnect connect)
         {
             const string file = @"C:\VISTA_MED\lustik_ak\templates";
             string text;
@@ -274,7 +275,7 @@ namespace HTMLTemplate
         #endregion
 
         #region Чтение шаблон печати
-        private static void Read(Connect connect)
+        private static void Read(SqlConnect connect)
         {
             Property.Clear();
             Console.Write("Код документа: ");
@@ -329,7 +330,7 @@ namespace HTMLTemplate
         #endregion
 
         #region Создание шаблона печати
-        private static void Create(Connect connect)
+        private static void Create(SqlConnect connect)
         {
             var eventclass = new EventClass();
             eventclass.Notify += event_Notify;
@@ -497,7 +498,7 @@ namespace HTMLTemplate
             }
         }
         #endregion
-        private static void Create_test(Connect connect)
+        private static void Create_test(SqlConnect connect)
         {
             Property.Clear();
             var eventclass = new EventClass();
@@ -658,7 +659,7 @@ namespace HTMLTemplate
         }
     
         #region Заполнение rbThesaurus
-        private static void RbThesaurus(string code, Connect connect , int startCode = 1)
+        private static void RbThesaurus(string code, SqlConnect connect , int startCode = 1)
         {
             //var start_code = 1;
             //var code = "13-25";
@@ -674,7 +675,7 @@ namespace HTMLTemplate
             }
 
         }
-        private static void Query1(string code, int startCode, Connect connect)
+        private static void Query1(string code, int startCode, SqlConnect connect)
         {
             var insCode = $"{code}-";
             var selCode = $"^{code}";
@@ -718,7 +719,7 @@ namespace HTMLTemplate
         #endregion
 
         #region Заполнение ActionPropertyType
-        private static void ActionPropertyType(string code, Connect connect, int startCode = 0)
+        private static void ActionPropertyType(string code, SqlConnect connect, int startCode = 0)
         {
             //var start_code = 40;
             //var code = "1193-26958";
@@ -734,7 +735,7 @@ namespace HTMLTemplate
             }
         }
 
-        private static void Query(string code, int startCode, Connect connect)
+        private static void Query(string code, int startCode, SqlConnect connect)
         {
             using (var sr = new StreamReader(Path, Encoding.Default))
             {
@@ -778,7 +779,7 @@ namespace HTMLTemplate
         #endregion
 
         #region Заполнение OrgStructure
-        private static void OrgStructure(Connect connect)
+        private static void OrgStructure(SqlConnect connect)
         {
             //var start_code = 40;
             //var code = "1193-26958";
@@ -818,7 +819,7 @@ namespace HTMLTemplate
         }
         #endregion
         #region Чтение шаблонов печати
-        private static void Read_all(Connect connect)
+        private static void Read_all(SqlConnect connect)
         {
             const string file = @"C:\VISTA_MED\lustik_ak\templates";
             try
