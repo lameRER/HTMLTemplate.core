@@ -349,7 +349,7 @@ namespace HTMLTemplate
                 Console.Write("Код документа: ");
                 _docContext = Console.ReadLine();
                 var file = @"C:\VISTA_MED\lustik_ak\templates";
-                //var slovar =File.ReadAllLines("Slovar.txt",	Encoding.GetEncoding("windows-1251")); // Создаю массив и считываю все что находится в файле  
+                //var slovar =File.ReadAllLines("Slovar.txt",	Encoding.GetEncoding("windows-1251")); // Создаю массив и считываю все что находится в файле
                 if (!Directory.Exists(file)) { Directory.CreateDirectory(file); }
                 var html = new FileStream($@"{file}\{_docContext}.html", FileMode.Create); //создаем файловый поток
                 var htmLwriterCreate =
@@ -466,7 +466,7 @@ namespace HTMLTemplate
                     Thread.Sleep(Random(Ran));
                     HtmLwriter(item);
                 }
-                #endregion                
+                #endregion
                 foreach (var s in EndText)
                 {
 
@@ -528,7 +528,7 @@ namespace HTMLTemplate
                 Console.Write("Код документа: ");
                 _docContext = Console.ReadLine();
                 const string file = @"C:\VISTA_MED\lustik_ak\templates";
-                //var slovar =File.ReadAllLines("Slovar.txt",	Encoding.GetEncoding("windows-1251")); // Создаю массив и считываю все что находится в файле  
+                //var slovar =File.ReadAllLines("Slovar.txt",	Encoding.GetEncoding("windows-1251")); // Создаю массив и считываю все что находится в файле
                 if (!Directory.Exists(file)) { Directory.CreateDirectory(file); }
                 var html = new FileStream($@"{file}\{_docContext}.html", FileMode.Create); //создаем файловый поток
                 var htmLwriterCreate =
@@ -689,7 +689,7 @@ namespace HTMLTemplate
                 Console.ReadKey();
             }
         }
-    
+
         #region Заполнение rbThesaurus
         private static void RbThesaurus(string code, int startCode = 1)
         {
@@ -711,7 +711,7 @@ namespace HTMLTemplate
         {
             var insCode = $"{code}-";
             var selCode = $"^{code}";
-            
+
                 string groupId;
                 using (var connection = new MySqlConnection($"Server={_connect}; database={_dataBase}; UID=dbuser; port={_port}; password=dbpassword"))
                 {
@@ -862,18 +862,18 @@ namespace HTMLTemplate
         #region Чтение шаблонов печати
         private static void Read_all()
         {
-            const string file = @"C:\VISTA_MED\lustik_ak\templates";
+            const string file = @"/run/media/sasha/OS/VISTA_MED/XE/templates/";
                 try
                 {
                     using var connection = new MySqlConnection($"Server={_connect}; database={_dataBase}; UID=dbuser; port={_port}; password=dbpassword");
                     //  connection.StateChange += Mysql_StateChange;
-                    var command = new MySqlCommand($"SELECT pt.id, replace(REGEXP_SUBSTR(name, '[а-яА-Я0-9-._ ]+'), '.', '_'), pt.`default` FROM rbPrintTemplate pt WHERE pt.deleted = 0", connection);
+                    var command = new MySqlCommand($"SELECT pt.id, replace(REGEXP_SUBSTR(name, '[а-яА-Яa-zA-Z0-9-._ ]+'), '.', '_'), pt.`default` FROM rbPrintTemplate pt WHERE pt.deleted = 0", connection);
                     connection.Open();
                     var reader = command.ExecuteReader();
                     while (reader.Read())
                     {
                         if (!Directory.Exists(file)) { Directory.CreateDirectory(file); }
-                        var html = new FileStream($@"{file}\{reader[0]}_{reader[1]}.html", FileMode.Create);
+                        var html = new FileStream($@"{file}/{reader[0]}_{reader[1]}.html", FileMode.Create);
                         var htmLwriter = new StreamWriter(html, Encoding.GetEncoding("UTF-8"));
                         htmLwriter.Write(reader[2]);
                         htmLwriter.Close();
