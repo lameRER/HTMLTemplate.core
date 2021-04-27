@@ -25,7 +25,7 @@ jobs:
     - name: Build
       run: dotnet build
     - name: Tets
-      run: dotnet tets
+      run: dotnet test
     #- name: Setup .NET
     # - name: Setup dotnet ${{ matrix.dotnet-version }}      
     #- name: Restore dependencies
