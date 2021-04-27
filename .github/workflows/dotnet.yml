@@ -23,14 +23,7 @@ jobs:
     - name: Install dependencies
       run: dotnet restore
     - name: Build
-      run: dotnet build
-    - name: Test with dotnet
-      run: dotnet test --logger trx --results-directory "TestResults-${{ matrix.dotnet-version }}"
-    - name: Upload dotnet test results
-      uses: actions/upload-artifact@v2
-      with:
-        name: dotnet-results-${{ matrix.dotnet-version }}
-        path: TestResults-${{ matrix.dotnet-version }}        
+      run: dotnet build   
     #- name: Setup .NET
     # - name: Setup dotnet ${{ matrix.dotnet-version }}      
     #- name: Restore dependencies
