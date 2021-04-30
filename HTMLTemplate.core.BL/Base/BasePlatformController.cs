@@ -1,25 +1,24 @@
 using System;
-using HTMLTemplate.core.BL.InterfaceController;
 using HTMLTemplate.core.BL.Model;
 
 namespace HTMLTemplate.core.BL.Base
 {
-    public abstract class BasePlatformController :  IPlatformMethod
+    public abstract class BasePlatformController 
     {
         public abstract Platform Platform { get; }
 
         protected BasePlatformController()
         {
-            if (Platform != null) Platform.PlatformId = ((IPlatformMethod) this).GetPlatform();
-            if (Platform != null) Platform.UserName = ((IPlatformMethod) this).GetUserName();
+            if (Platform != null) Platform.PlatformId = GetPlatform();
+            if (Platform != null) Platform.UserName = GetUserName();
         }
 
-        PlatformID IPlatformMethod.GetPlatform()
+        private static PlatformID GetPlatform()
         {
             return Environment.OSVersion.Platform;
         }
 
-        string IPlatformMethod.GetUserName()
+        private static string GetUserName()
         {
             return Environment.UserName;
         }
