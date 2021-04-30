@@ -5,7 +5,7 @@ using HTMLTemplate.core.BL.Model;
 
 namespace HTMLTemplate.core.BL.Controller
 {
-    public class SettingController : BaseSetting
+    public class SettingController : BaseSettingController
     {
         public override string GetSettingsFile()
         {
