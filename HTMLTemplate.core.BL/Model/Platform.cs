@@ -1,11 +1,23 @@
 using System;
 using HTMLTemplate.core.BL.Base;
+using HTMLTemplate.core.BL.Interface;
 
 namespace HTMLTemplate.core.BL.Model
 {
-    public sealed class Platform : BasePlatform
+    public sealed class Platform : IPlatform
     {
-        public override PlatformID PlatformId { get; protected internal set; }
-        public override string UserName { get; protected internal set; }
+        public PlatformID PlatformId { get; internal set; }
+        PlatformID IPlatform.PlatformId
+        {
+            get => this.PlatformId;
+            set => this.PlatformId = value;
+        }
+
+        public string UserName { get; internal set; }
+        string IPlatform.UserName
+        {
+            get => this.UserName;
+            set => this.UserName = value;
+        }
     }
 }
