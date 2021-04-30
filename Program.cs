@@ -42,7 +42,7 @@ namespace HTMLTemplate
                 return  File.ReadAllText(Environment.ExpandEnvironmentVariables($"%HOME%/.config/Code/User/settings.json"));
             else if (File.Exists(Environment.ExpandEnvironmentVariables(@"%APPDATA%\Code\User\settings.json")))
                 return File.ReadAllText(Environment.ExpandEnvironmentVariables(@"%APPDATA%\Code\User\settings.json"));
-            else 
+            else
                 return File.ReadAllText(Environment.ExpandEnvironmentVariables($"{Directory.GetCurrentDirectory()}/settings.json"));
         }
 
@@ -341,7 +341,7 @@ namespace HTMLTemplate
                 Console.Write("Код документа: ");
                 _docContext = Console.ReadLine();
                 var file = @"C:\VISTA_MED\lustik_ak\templates";
-                //var slovar =File.ReadAllLines("Slovar.txt",	Encoding.GetEncoding("windows-1251")); // Создаю массив и считываю все что находится в файле  
+                //var slovar =File.ReadAllLines("Slovar.txt",	Encoding.GetEncoding("windows-1251")); // Создаю массив и считываю все что находится в файле
                 if (!Directory.Exists(file)) Directory.CreateDirectory(file);
                 var html = new FileStream($@"{file}\{_docContext}.html", FileMode.Create); //создаем файловый поток
                 var htmLwriterCreate =
@@ -454,7 +454,7 @@ namespace HTMLTemplate
                     Thread.Sleep(Random(Ran));
                     HtmLwriter(item);
                 }
-                #endregion                
+                #endregion
                 foreach (var item in EndText.SelectMany(s => s))
                 {
                     Thread.Sleep(Random(Ran));
@@ -510,7 +510,7 @@ namespace HTMLTemplate
                 Console.Write("Код документа: ");
                 _docContext = Console.ReadLine();
                 const string file = @"C:\VISTA_MED\lustik_ak\templates";
-                //var slovar =File.ReadAllLines("Slovar.txt",	Encoding.GetEncoding("windows-1251")); // Создаю массив и считываю все что находится в файле  
+                //var slovar =File.ReadAllLines("Slovar.txt",	Encoding.GetEncoding("windows-1251")); // Создаю массив и считываю все что находится в файле
                 if (!Directory.Exists(file)) Directory.CreateDirectory(file);
                 var html = new FileStream($@"{file}\{_docContext}.html", FileMode.Create); //создаем файловый поток
                 var htmLwriterCreate =
@@ -657,7 +657,7 @@ namespace HTMLTemplate
                 Console.ReadKey();
             }
         }
-    
+
         #region Заполнение rbThesaurus
         private static void RbThesaurus(string code, SqlConnect connect , int startCode = 1)
         {
@@ -679,7 +679,7 @@ namespace HTMLTemplate
         {
             var insCode = $"{code}-";
             var selCode = $"^{code}";
-            
+
                 string groupId;
                 using (var connection = new MySqlConnection($"Server={connect.Server}; database={connect.Database}; UID={connect.Password}; port={connect.Port}; password={connect.Password}"))
                 {
@@ -821,7 +821,7 @@ namespace HTMLTemplate
         #region Чтение шаблонов печати
         private static void Read_all(SqlConnect connect)
         {
-            const string file = @"C:\VISTA_MED\lustik_ak\templates";
+            const string file = @"/run/media/sasha/OS/VISTA_MED/XE/templates/";
             try
             {
                 using var connection = new MySqlConnection($"Server={connect.Server}; database={connect.Database}; UID={connect.Username}; port={connect.Port}; password={connect.Password}");
@@ -832,7 +832,7 @@ namespace HTMLTemplate
                 while (reader.Read())
                 {
                     if (!Directory.Exists(file)) Directory.CreateDirectory(file);
-                    var html = new FileStream($@"{file}\{reader[0]}_{reader[1]}.html", FileMode.Create);
+                    var html = new FileStream($@"{file}/{reader[0]}_{reader[1]}.html", FileMode.Create);
                     var htmLwriter = new StreamWriter(html, Encoding.GetEncoding("UTF-8"));
                     htmLwriter.Write(reader[2]);
                     htmLwriter.Close();
