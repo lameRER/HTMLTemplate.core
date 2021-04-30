@@ -5,7 +5,7 @@ using System.Text;
 
 namespace HTMLTemplate
 {
-    public class TemplateFile : IDisposable
+    public class TemplateFile 
     {
         private string _directoryFile;
         private string _directoryTemplate;
@@ -117,11 +117,6 @@ namespace HTMLTemplate
                 return writeTextCode;
             else
                 throw new ArgumentNullException(nameof(writeTextCode));
-        }
-
-        public void Dispose()
-        {
-            throw new NotImplementedException();
         }
     }
 }
