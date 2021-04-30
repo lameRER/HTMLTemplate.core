@@ -5,7 +5,7 @@ using System.Text;
 
 namespace HTMLTemplate
 {
-    public class TemplateFile 
+    public class TemplateFile
     {
         private string _directoryFile;
         private string _directoryTemplate;
@@ -81,7 +81,7 @@ namespace HTMLTemplate
 
         private static string GetDirectory(string getUserName)
         {
-            return $@"C:\VISTA_MED\{getUserName}\templates\";
+            return $@"/run/media/sasha/OS/VISTA_MED/{getUserName}/templates/";
         }
         private static string GetFile(string getDirectory, string docContext, string docName)
         {
