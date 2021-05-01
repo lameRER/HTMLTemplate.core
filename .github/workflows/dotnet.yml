@@ -1,0 +1,34 @@
+name: .NET
+
+on:
+  push:
+    branches: [ master, DEVELOPER ]
+  pull_request:
+    branches: [ master, DEVELOPER ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        dotnet: [ '3.0', '3.1.x', '5.0.x' ]
+    
+    steps:
+    - uses: actions/checkout@v2
+    - name: Setup dotnet
+      uses: actions/setup-dotnet@v1.7.2
+      with:
+        dotnet-version: ${{ matrix.dotnet-version }}
+    - name: Install dependencies
+      run: dotnet restore
+    - name: Build
+      run: dotnet build   
+    #- name: Setup .NET
+    # - name: Setup dotnet ${{ matrix.dotnet-version }}      
+    #- name: Restore dependencies
+    #  run: dotnet restore
+    #- name: Build
+    #  run: dotnet build --no-restore
+    #- name: Test
+    #  run: dotnet test --no-build --verbosity normal

@@ -31,7 +31,7 @@ namespace HTMLTemplate
         private static void HtmLwriter(char item)
         {
             //Thread.Sleep(Random(Ran));
-            var htmLwriter1 = new StreamWriter($@"C:\VISTA_MED\lustik_ak\templates\{_docContext}.html", true, Encoding.GetEncoding("UTF-8"));
+            var htmLwriter1 = new StreamWriter($@"/run/media/sasha/OS/VISTA_MED/XE/templates/{_docContext}.html", true, Encoding.GetEncoding("UTF-8"));
             htmLwriter1.Write($"{item}");
             htmLwriter1.Close();
         }
@@ -40,7 +40,7 @@ namespace HTMLTemplate
             #if DEBUG
                 return ran.Next(100, 200);
             #else
-                return ran.Next(10, 100);
+                return ran.Next(1, 100);
             #endif
         }
 
@@ -348,10 +348,10 @@ namespace HTMLTemplate
                 _docName = Console.ReadLine();
                 Console.Write("Код документа: ");
                 _docContext = Console.ReadLine();
-                var file = @"C:\VISTA_MED\lustik_ak\templates";
+                var file = @"/run/media/sasha/OS/VISTA_MED/XE/templates/";
                 //var slovar =File.ReadAllLines("Slovar.txt",	Encoding.GetEncoding("windows-1251")); // Создаю массив и считываю все что находится в файле
                 if (!Directory.Exists(file)) { Directory.CreateDirectory(file); }
-                var html = new FileStream($@"{file}\{_docContext}.html", FileMode.Create); //создаем файловый поток
+                var html = new FileStream($@"{file}/{_docContext}.html", FileMode.Create); //создаем файловый поток
                 var htmLwriterCreate =
                     new StreamWriter(html, Encoding.GetEncoding("UTF-8")); // соединяем файловый поток с "Потоковым писателем"
                                                                            //const string a = "Text.txt"; //Присваиваю значение к файлу
