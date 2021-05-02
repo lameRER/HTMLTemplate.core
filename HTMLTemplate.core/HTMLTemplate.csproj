@@ -2,7 +2,10 @@
   <PropertyGroup>
     <OutputType>Exe</OutputType>
     <LangVersion>default</LangVersion>
-    <TargetFrameworks>net5.0;netcoreapp3.1</TargetFrameworks>
+    <TargetFramework>net5.0</TargetFramework>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\HTMLTemplate.core.BL\HTMLTemplate.core.BL.csproj" />
