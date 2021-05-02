@@ -7,6 +7,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HTMLTemplate", "HTMLTemplat
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HTMLTemplate.core.BL", "HTMLTemplate.core.BL\HTMLTemplate.core.BL.csproj", "{5607221B-CAC0-4B6D-BD21-05A48A8B15EE}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HTML.TEmplate.core.Tests", "HTMLTemplate.core.Tests\HTMLTemplate.core.Tests.csproj", "{C0BFFF59-4FF5-481D-8B4A-0984CA7CCD95}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{5607221B-CAC0-4B6D-BD21-05A48A8B15EE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5607221B-CAC0-4B6D-BD21-05A48A8B15EE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5607221B-CAC0-4B6D-BD21-05A48A8B15EE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C0BFFF59-4FF5-481D-8B4A-0984CA7CCD95}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C0BFFF59-4FF5-481D-8B4A-0984CA7CCD95}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C0BFFF59-4FF5-481D-8B4A-0984CA7CCD95}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C0BFFF59-4FF5-481D-8B4A-0984CA7CCD95}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
