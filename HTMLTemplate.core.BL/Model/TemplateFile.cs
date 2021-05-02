@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using HTMLTemplate.core.BL.Interface;
 
 namespace HTMLTemplate.core.BL.Model
@@ -8,5 +9,6 @@ namespace HTMLTemplate.core.BL.Model
         public string DirectoryTemplate { get; set; }
         public string FileName { get; set; }
         public string FileCode { get; set; }
+        public List<string> TemplateLine { get; set; }
     }
 }
