@@ -24,6 +24,9 @@ jobs:
       run: dotnet restore
     - name: Build
       run: dotnet build   
+    - name: Publish Release
+      uses: eregon/publish-release@v1.0.3
+    
     #- name: Setup .NET
     # - name: Setup dotnet ${{ matrix.dotnet-version }}      
     #- name: Restore dependencies
