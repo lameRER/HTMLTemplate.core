@@ -31,7 +31,11 @@ namespace HTMLTemplate.core.BL.Model
             {
                 optionsBuilder.UseMySql(
                     $"server={_sqlConnect.Server};database={_sqlConnect.Database};user={_sqlConnect.Username};pwd={_sqlConnect.Password};Persist Security Info=True;Convert Zero Datetime=True",
-                    Microsoft.EntityFrameworkCore.ServerVersion.Parse("10.4.17-mariadb"));
+                    Microsoft.EntityFrameworkCore.ServerVersion.Parse("10.4.17-mariadb"),
+                    builder =>
+                    {
+                    builder.EnableRetryOnFailure(5, TimeSpan.FromSeconds(10), null);
+                    });
             }
         }
 
@@ -895,15 +899,6 @@ namespace HTMLTemplate.core.BL.Model
                     .HasComment(
                         "0-Количество вводится непосредственно, 1-По числу визитов, 2-По длительности события, 3-По длительности события без выходных дней, 4-По длительности действия, 5-По длительности действия без выходных дней, 6-По заполненным свойствам действия");
 
-                entity.Property(e => e.CheckPeriod)
-                    .HasColumnName("checkPeriod")
-                    .HasComment("0-мягкая проверка, 1-жесткая проверка");
-
-                entity.Property(e => e.CheckPersonSet)
-                    .HasColumnName("checkPersonSet")
-                    .HasDefaultValueSql("'0'")
-                    .HasComment("Флаг: Проверять на наличие исполнителя");
-
                 entity.Property(e => e.Class)
                     .HasColumnName("class")
                     .HasComment("0-статус, 1-диагностика, 2-лечение, 3-прочие мероприятия");
@@ -1005,11 +1000,6 @@ namespace HTMLTemplate.core.BL.Model
                     .HasColumnName("deleted")
                     .HasComment("Отметка удаления записи");
 
-                entity.Property(e => e.EventStatusMod)
-                    .HasColumnType("smallint(1)")
-                    .HasColumnName("eventStatusMod")
-                    .HasDefaultValueSql("'0'");
-
                 entity.Property(e => e.FilledLock)
                     .HasColumnName("filledLock")
                     .HasDefaultValueSql("'0'")
@@ -1069,16 +1059,6 @@ namespace HTMLTemplate.core.BL.Model
                 entity.Property(e => e.IsActiveGroup)
                     .HasColumnName("isActiveGroup")
                     .HasComment("Событие, которое заменяет параметры дочерних действий");
-
-                entity.Property(e => e.IsAllowedAfterDeath)
-                    .HasColumnType("smallint(1)")
-                    .HasColumnName("isAllowedAfterDeath")
-                    .HasDefaultValueSql("'0'");
-
-                entity.Property(e => e.IsAllowedDateAfterDeath)
-                    .HasColumnType("smallint(1)")
-                    .HasColumnName("isAllowedDateAfterDeath")
-                    .HasDefaultValueSql("'0'");
 
                 entity.Property(e => e.IsCustomSum)
                     .HasColumnName("isCustomSum")
@@ -1182,11 +1162,6 @@ namespace HTMLTemplate.core.BL.Model
                     .HasColumnName("office")
                     .HasComment("Кабинет по умолчанию");
 
-                entity.Property(e => e.Period)
-                    .HasColumnType("tinyint(4)")
-                    .HasColumnName("period")
-                    .HasComment("Период целое число, количество действий этого типа в месяц");
-
                 entity.Property(e => e.PrescribedTypeId)
                     .HasColumnType("int(11)")
                     .HasColumnName("prescribedType_id")
@@ -1252,10 +1227,6 @@ namespace HTMLTemplate.core.BL.Model
                     .HasColumnName("shedule_id")
                     .HasComment("График по умолчанию {rbActionShedule}");
 
-                entity.Property(e => e.ShowApnotes)
-                    .HasColumnName("showAPNotes")
-                    .HasDefaultValueSql("'1'");
-
                 entity.Property(e => e.ShowAporg)
                     .HasColumnName("showAPOrg")
                     .HasDefaultValueSql("'1'");
@@ -1268,26 +1239,11 @@ namespace HTMLTemplate.core.BL.Model
                     .HasColumnName("showTime")
                     .HasComment("Показывать в интерфейсе не только дату, но и время назначения/начала/окончания");
 
-                entity.Property(e => e.SingleInPeriod)
-                    .HasColumnType("tinyint(4)")
-                    .HasColumnName("singleInPeriod")
-                    .HasComment(
-                        "Период повторения, целое число: 0-нет, 1-неделя, 2-месяц, 3-квартал, 4-полугодие, 5-год");
-
                 entity.Property(e => e.Title)
                     .IsRequired()
                     .HasMaxLength(255)
                     .HasColumnName("title")
                     .HasComment("Наименование для печати");
-
-                entity.Property(e => e.Visible)
-                    .IsRequired()
-                    .HasColumnName("visible")
-                    .HasDefaultValueSql("'1'");
-
-                entity.Property(e => e.WithoutAgree)
-                    .HasColumnName("withoutAgree")
-                    .HasComment("1-не требует согласования ");
 
                 entity.HasOne(d => d.Group)
                     .WithMany(p => p.InverseGroup)
