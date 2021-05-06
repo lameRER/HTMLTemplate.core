@@ -62,10 +62,8 @@ namespace HTMLTemplate.core.BL.Model
         public bool? PropertyEvaluationVisible { get; set; }
         public bool ServiceType { get; set; }
         public short ActualAppointmentDuration { get; set; }
-        public bool? Visible { get; set; }
         public bool IsSubstituteEndDateToEvent { get; set; }
         public bool? IsPrinted { get; set; }
-        public bool WithoutAgree { get; set; }
         public sbyte DefaultMes { get; set; }
         public int FrequencyCount { get; set; }
         public sbyte FrequencyPeriod { get; set; }
@@ -81,22 +79,13 @@ namespace HTMLTemplate.core.BL.Model
         public string LisCode { get; set; }
         public bool Locked { get; set; }
         public bool? FilledLock { get; set; }
-        public sbyte? Period { get; set; }
-        public sbyte? SingleInPeriod { get; set; }
-        public bool CheckPeriod { get; set; }
         public sbyte DefaultBeginDate { get; set; }
         public int? RefferalTypeId { get; set; }
         public bool? FilterPosts { get; set; }
         public bool? FilterSpecialities { get; set; }
         public bool? ShowAporg { get; set; }
-        public bool? ShowApnotes { get; set; }
         public bool? IsIgnoreEventExecDate { get; set; }
-        public bool? CheckPersonSet { get; set; }
         public string FormulaAlias { get; set; }
-        public short? IsAllowedAfterDeath { get; set; }
-        public short? IsAllowedDateAfterDeath { get; set; }
-        public short? EventStatusMod { get; set; }
-
         public virtual ActionType Group { get; set; }
         public virtual ActionType PrescribedType { get; set; }
         public virtual ICollection<ActionPropertyType> ActionPropertyTypes { get; set; }
