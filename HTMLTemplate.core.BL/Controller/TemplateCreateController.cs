@@ -10,8 +10,8 @@ namespace HTMLTemplate.core.BL.Controller
     {
         private readonly string? _fileName;
         private readonly string? _fileCode;
-        private readonly PlatformController _platform;
-        private readonly SqlConnectProperty _connect;
+        private readonly PlatformController? _platform;
+        private readonly SqlConnectProperty? _connect;
 
         public TemplateCreateController(string? fileName, string? fileCode, PlatformController platform,
             SqlConnectProperty connect)
@@ -27,8 +27,8 @@ namespace HTMLTemplate.core.BL.Controller
                 _fileCode = fileCode;
                 _platform = platform ?? throw new ArgumentNullException(nameof(platform));
                 _connect = connect;
-                var sql = MysqlController();
-                TemplateFileController(sql.GetValue(sql.MySqlConnect()));
+                var sql = MysqlController(_connect, _fileName, _fileCode);
+                TemplateFileController(sql.GetValue(sql.MySqlConnect()), _fileName, _fileCode, _platform);
             }
             catch (Exception e)
             {
@@ -36,14 +36,14 @@ namespace HTMLTemplate.core.BL.Controller
             }
         }
 
-        private MysqlController MysqlController()
+        private MysqlController MysqlController(SqlConnectProperty conn, string name, string code)
         {
-            return new(_connect, _fileName, _fileCode);
+            return new(conn, name, code);
         }
 
-        private TemplateFileController TemplateFileController(IEnumerable<ActionType> actionTypes)
+        private TemplateFileController TemplateFileController(IEnumerable<ActionType> actionTypes, string name, string code, PlatformController pt)
         {
-            return new(_fileName, _fileCode, _platform, actionTypes);
+            return new(name, code, pt, actionTypes);
         }
     }
 }
