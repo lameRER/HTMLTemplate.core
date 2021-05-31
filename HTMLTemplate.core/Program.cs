@@ -75,8 +75,8 @@ namespace HTMLTemplate
                     Console.Write("Имя документа: ");
                     var fileName = Console.ReadLine();
                     Console.Write("Код документа: ");
-                    var fileCode = Console.ReadLine(); 
-                    TemplateCreateController(fileName, fileCode, platform, connect);
+                    var fileCode = Console.ReadLine();
+                    TemplateCreateController(fileName, fileCode, platform, connect).Create();
                     break;
                 default:
                     throw new Exception("Неверное значение!");
