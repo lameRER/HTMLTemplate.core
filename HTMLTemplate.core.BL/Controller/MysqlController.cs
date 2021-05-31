@@ -12,7 +12,7 @@ namespace HTMLTemplate.core.BL.Controller
         private readonly string? _fileName;
         private readonly string? _fileCode;
 
-        public MysqlController(SqlConnectProperty connect, string? fileName, string? fileCode)
+        public MysqlController(SqlConnectProperty? connect, string? fileName, string? fileCode)
         {
             _connect = connect ?? throw new ArgumentNullException(nameof(connect));
             _fileName = fileName ?? throw new ArgumentNullException(nameof(fileName));
