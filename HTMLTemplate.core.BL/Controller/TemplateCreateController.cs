@@ -62,7 +62,7 @@ namespace HTMLTemplate.core.BL.Controller
             return new(conn, name, code);
         }
         
-         public sealed override void WriteFileProperty(IEnumerable<ActionType> listProperty)
+        public sealed override void WriteFileProperty(IEnumerable<ActionType> listProperty)
         {
             foreach (var prop in listProperty)
                 TemplateFile.TemplateLine.Add("				{if: prop.name == u'" + prop + "' and prop.value}" +
