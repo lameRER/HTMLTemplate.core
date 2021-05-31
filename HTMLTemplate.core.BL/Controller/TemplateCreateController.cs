@@ -52,17 +52,16 @@ namespace HTMLTemplate.core.BL.Controller
             TemplateFile.DirectoryTemplate = GetDirectory(_platform?.Platform);
             TemplateFile.DirectoryFile =
                 GetFile(TemplateFile.DirectoryTemplate, TemplateFile.FileCode, TemplateFile.FileName);
-            Create(TemplateFile.DirectoryTemplate);
+            CreateFile(TemplateFile.DirectoryTemplate);
             WriteFile(TemplateFile.DirectoryFile);
-            WriteTemplate(actionTypes);
+            WriteFileProperty(actionTypes);
         }
 
         private static MysqlController MysqlController(SqlConnectProperty? conn, string? name, string? code)
         {
             return new(conn, name, code);
         }
-        
-         public sealed override void WriteTemplate(IEnumerable<ActionType> listProperty)
+        public sealed override void WriteFileProperty(IEnumerable<ActionType> listProperty)
         {
             foreach (var prop in listProperty)
                 TemplateFile.TemplateLine.Add("				{if: prop.name == u'" + prop + "' and prop.value}" +
@@ -194,8 +193,8 @@ namespace HTMLTemplate.core.BL.Controller
                 protected override string? GetDirectory(Platform? platform) => platform is {PlatformId: PlatformID.Unix} ? Environment.ExpandEnvironmentVariables($@"/%HOME%/VISTA_MED/{platform.UserName}/templates/") : null;
 
                 protected sealed override string GetFile(string? getDirectory, string docContext, string docName) => $@"{getDirectory}{docContext}_{docName}.html";
-        
-                protected sealed override void Create(string? directory)
+       
+                protected sealed override void CreateFile(string? directory)
                 {
                     if (!FileExist(directory)) return;
                     if (directory != null)
