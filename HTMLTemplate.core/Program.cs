@@ -10,13 +10,48 @@ namespace HTMLTemplate
 {
     public static class Program
     {
-        internal static void Main()
+        internal static void Main(string[] args)
         {
-            StartUp();
+            if (args.Length > 0 && args[0] == "-ReadAll")
+            {
+                ReadAll();
+            }
+            else
+            {
+                StartUp();   
+            }
+        }
+
+        private static void ReadAll()
+        {
+            var eventNotify = new EventNotify();
+            try
+            {
+                var platform = new PlatformController();
+                var sqlTools = new SqlConnectController(platform.GetSettingsFile());
+                if (sqlTools.SqlToolsConnects == null) return;
+                foreach (var connect in sqlTools.SqlToolsConnects.Connects)
+                {
+                    try
+                    {
+                        TemplateReadAllController(connect,platform).Create();
+                        eventNotify.Select(connect.Name);
+                    }
+                    catch (Exception e)
+                    {
+                        eventNotify.Error(string.Concat(connect.Name, " ", MethodBase.GetCurrentMethod()?.ReflectedType?.Name), e);
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                eventNotify.Error(MethodBase.GetCurrentMethod()?.ReflectedType?.Name, e);
+            }
         }
 
         private static void StartUp()
         {
+            var eventNotify = new EventNotify();
             try
             {
                 var platform = new PlatformController();
@@ -31,20 +66,12 @@ namespace HTMLTemplate
             }
             catch (Exception e)
             {
-                Error(e);
+                eventNotify.Error(MethodBase.GetCurrentMethod()?.ReflectedType?.Name, e);
             }
             finally
             {
                 StartUp();
             }
-        }
-
-        static void Error(Exception exception)
-        {
-            Console.Clear();
-            Console.ForegroundColor = ConsoleColor.Red;
-            Console.WriteLine(exception.Message);
-            Console.ResetColor();
         }
         private static int? GetConnect()
         {
@@ -72,7 +99,7 @@ namespace HTMLTemplate
             switch (Convert.ToInt32(Console.ReadLine()))
             {
                 case 1:
-                    new TemplateReadAllController(connect,platform).Create();
+                    TemplateReadAllController(connect,platform).Create();
                     break;
                 case 2:
                     Console.Write("Имя документа: ");
@@ -85,10 +112,7 @@ namespace HTMLTemplate
                     throw new Exception("Неверное значение!");
             }
         }
-
-        private static TemplateCreateController TemplateCreateController(string fileName, string fileCode, PlatformController platform, SqlConnectProperty connect)
-        {
-            return new(fileName, fileCode, platform, connect);
-        }
+        private static TemplateReadAllController TemplateReadAllController(SqlConnectProperty connect, PlatformController platform) => new(connect, platform);
+        private static TemplateCreateController TemplateCreateController(string fileName, string fileCode, PlatformController platform, SqlConnectProperty connect) => new(fileName, fileCode, platform, connect);
     }
 }
