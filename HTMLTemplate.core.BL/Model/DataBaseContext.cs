@@ -495,17 +495,11 @@ namespace HTMLTemplate.core.BL.Model
 
                 entity.HasIndex(e => e.ModifyPersonId, "PrintTemplate_modifyPerson_id");
 
-                entity.HasIndex(e => e.CounterId, "rbPrintTemplate_counter_id");
-
                 entity.HasIndex(e => e.DocumentTypeId, "rbPrintTemplate_documentType");
 
                 entity.Property(e => e.Id)
                     .HasColumnType("int(11)")
                     .HasColumnName("id");
-
-                entity.Property(e => e.BanUnkeptDate)
-                    .HasColumnName("banUnkeptDate")
-                    .HasComment("0=разрешено, 1=запрещено");
 
                 entity.Property(e => e.Code)
                     .IsRequired()
@@ -518,11 +512,6 @@ namespace HTMLTemplate.core.BL.Model
                     .HasMaxLength(64)
                     .HasColumnName("context")
                     .HasComment("Контекст (order, token, F131 и т.п.) ");
-
-                entity.Property(e => e.CounterId)
-                    .HasColumnType("int(11)")
-                    .HasColumnName("counter_id")
-                    .HasComment("Используемый счетчик при печати из обращений");
 
                 entity.Property(e => e.CreateDatetime)
                     .HasColumnType("datetime")
@@ -593,12 +582,6 @@ namespace HTMLTemplate.core.BL.Model
                     .HasMaxLength(128)
                     .HasColumnName("name")
                     .HasComment("Наименование");
-
-                entity.Property(e => e.PageOrientation)
-                    .IsRequired()
-                    .HasColumnType("enum('P','L')")
-                    .HasColumnName("pageOrientation")
-                    .HasDefaultValueSql("'P'");
 
                 entity.Property(e => e.Type)
                     .HasColumnName("type")
