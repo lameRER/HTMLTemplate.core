@@ -27,7 +27,23 @@ namespace HTMLTemplate.core.Tests
             {
                 text =item.Name;
             }
+            
             Assert.AreEqual(fileName, text);
+        }
+
+        [Test]
+        public void TemplateCreateControllerTest()
+        {
+            var platform = new PlatformController();
+            var sqlTools = new SqlConnectController(platform.GetSettingsFile());
+            var connect = sqlTools.SqlToolsConnects?.Connects[0];
+            const string fileCode = "16490-1";
+            const string fileName = "Рентгенография всего черепа, в одной или более проекциях";
+            var templateReadAllController = new TemplateReadAllController(connect,platform);
+            templateReadAllController.Create();
+            var templateCreateController = new TemplateCreateController(fileName, fileCode, platform, connect);
+            templateCreateController.Create();
+            Assert.Pass(templateCreateController.TemplateFile.DirectoryFile);
         }
     }
 }
