@@ -25,10 +25,10 @@ namespace HTMLTemplate.core.BL.Controller
             var sql = new MysqlController(_connect);
             var actionTypes = sql.GetRbPrintTemplateValue(sql.MySqlConnect());
             if (actionTypes == null) throw new ArgumentNullException(nameof(actionTypes));
-            TemplateFile.DirectoryTemplate = GetDirectory(Platform?.Platform);
+            TemplateFile.DirectoryTemplate = string.Concat(GetDirectory(Platform?.Platform), _connect.Name);
             foreach (var at in actionTypes)
             {
-                TemplateFile.DirectoryFile = GetFile(TemplateFile.DirectoryTemplate, at.Id, at.Name.Replace(".", "_").Replace(" ", "_").Replace("/", "_"));
+                TemplateFile.DirectoryFile = GetFile(TemplateFile.DirectoryTemplate, _connect, at.Id, at.Name.Replace(".", "_").Replace(" ", "_").Replace("/", "_"));
                 CreateFile(TemplateFile.DirectoryTemplate);
                 WriteFile(TemplateFile.DirectoryFile, at.Default);    
             }
@@ -43,7 +43,7 @@ namespace HTMLTemplate.core.BL.Controller
             htmlWriterCreate.Write(templateFileDirectoryFile);
             htmlWriterCreate.Close();
         }
-        private static string GetFile(string? getDirectory, int id, string? docName) => $@"{getDirectory}{id}_{docName}.html";
+        private static string GetFile(string? getDirectory, SqlConnectProperty connect, int id, string? docName) => $@"{getDirectory}/{id}_{docName}.html";
 
         private static MysqlController MysqlController(SqlConnectProperty? conn)
         {
