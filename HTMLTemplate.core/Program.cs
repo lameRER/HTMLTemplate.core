@@ -66,12 +66,15 @@ namespace HTMLTemplate
 
         private static void GetFunction(SqlConnectProperty connect, PlatformController platform)
         {
-            var countries = new Dictionary<int, string>(10) {{1, "Создание шаблона печати"}};
+            var countries = new Dictionary<int, string>(10) {{1, "Загрузка шаблонов печати"},{2, "Создание шаблона печати"}};
             foreach (var (key, value) in countries) Console.WriteLine($"{key}. {value}");
             Console.Write("Value: ");
             switch (Convert.ToInt32(Console.ReadLine()))
             {
                 case 1:
+                    new TemplateReadAllController(connect,platform).Create();
+                    break;
+                case 2:
                     Console.Write("Имя документа: ");
                     var fileName = Console.ReadLine();
                     Console.Write("Код документа: ");
