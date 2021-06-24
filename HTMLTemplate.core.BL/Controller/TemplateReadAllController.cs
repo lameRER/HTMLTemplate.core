@@ -25,7 +25,7 @@ namespace HTMLTemplate.core.BL.Controller
             var sql = new MysqlController(_connect);
             var actionTypes = sql.GetRbPrintTemplateValue(sql.MySqlConnect());
             if (actionTypes == null) throw new ArgumentNullException(nameof(actionTypes));
-            TemplateFile.DirectoryTemplate = string.Concat(GetDirectory(Platform?.Platform), '\\', _connect.Name);
+            TemplateFile.DirectoryTemplate = string.Concat(GetDirectory(Platform?.Platform), _connect.Name, '/');
             foreach (var at in actionTypes)
             {
                 TemplateFile.DirectoryFile = GetFile(TemplateFile.DirectoryTemplate, _connect, at.Id, at.Name.Replace(".", "_").Replace(" ", "_").Replace("/", "_"));
