@@ -30,7 +30,7 @@ namespace HTMLTemplate.core.BL.Model
             if (!optionsBuilder.IsConfigured)
             {
                 optionsBuilder.UseMySql(
-                    $"server={_sqlConnect.Server};database={_sqlConnect.Database};user={_sqlConnect.Username};pwd={_sqlConnect.Password};Persist Security Info=True;Convert Zero Datetime=True",
+                    $"server={_sqlConnect.Server};database={_sqlConnect.Database};user={_sqlConnect.Username};pwd={_sqlConnect.Password};port={_sqlConnect.Port};Persist Security Info=True;Convert Zero Datetime=True",
                     Microsoft.EntityFrameworkCore.ServerVersion.Parse("10.4.17-mariadb"),
                     builder =>
                     {
