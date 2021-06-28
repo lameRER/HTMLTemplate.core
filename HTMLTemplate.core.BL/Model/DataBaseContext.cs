@@ -553,10 +553,6 @@ namespace HTMLTemplate.core.BL.Model
                     .HasColumnName("groupName")
                     .HasComment("Группа");
 
-                entity.Property(e => e.HideParam)
-                    .HasColumnName("hideParam")
-                    .HasComment("2-скрыть у врачей");
-
                 entity.Property(e => e.IsEditableInWeb)
                     .IsRequired()
                     .HasColumnName("isEditableInWeb")
