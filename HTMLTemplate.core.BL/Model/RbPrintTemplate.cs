@@ -20,6 +20,7 @@ namespace HTMLTemplate.core.BL.Models
         public string Default { get; set; }
         public bool? DpdAgreement { get; set; }
         public bool? Type { get; set; }
+        public bool? HideParam { get; set; }
         public sbyte Deleted { get; set; }
         public bool? IsPatientAgreed { get; set; }
         public string GroupName { get; set; }

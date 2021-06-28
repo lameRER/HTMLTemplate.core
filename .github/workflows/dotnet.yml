@@ -2,9 +2,9 @@ name: .NET
 
 on:
   push:
-    branches: [ master, DEV ]
+    branches: [ master, Vista-Med ]
   pull_request:
-    branches: [ master, DEV ]
+    branches: [ master, Vista-Med ]
 
 jobs:
   build:
@@ -13,7 +13,7 @@ jobs:
     strategy:
       matrix:
         dotnet: [ '3.0', '3.1.x', '5.0.x' ]
-    
+
     steps:
     - uses: actions/checkout@v2
     - name: Setup dotnet
@@ -23,9 +23,9 @@ jobs:
     - name: Install dependencies
       run: dotnet restore
     - name: Build
-      run: dotnet build   
+      run: dotnet build
     #- name: Setup .NET
-    # - name: Setup dotnet ${{ matrix.dotnet-version }}      
+    # - name: Setup dotnet ${{ matrix.dotnet-version }}
     #- name: Restore dependencies
     #  run: dotnet restore
     #- name: Build
