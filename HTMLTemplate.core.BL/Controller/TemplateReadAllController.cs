@@ -1,8 +1,10 @@
 #nullable enable
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Text;
+using System.Threading;
 using HTMLTemplate.core.BL.Base;
 using HTMLTemplate.core.BL.Model;
 
@@ -28,10 +30,18 @@ namespace HTMLTemplate.core.BL.Controller
             TemplateFile.DirectoryTemplate = string.Concat(GetDirectory(Platform?.Platform), _connect.Name, '/');
             foreach (var at in actionTypes)
             {
-                TemplateFile.DirectoryFile = GetFile(TemplateFile.DirectoryTemplate, _connect, at.Id, at.Name.Replace(".", "_").Replace(" ", "_").Replace("/", "_"));
+                TemplateFile.DirectoryFile = GetFile(TemplateFile.DirectoryTemplate, at.Id, at.Name.Replace(".", "_").Replace(" ", "_").Replace("/", "_"));
                 CreateFile(TemplateFile.DirectoryTemplate);
                 WriteFile(TemplateFile.DirectoryFile, at.Default);
             }
+            AutoCommit();
+        }
+
+        private static void AutoCommit()
+        {
+            if(File.Exists("/home/sasha/VISTA_MED/sasha/templates/.git/index.lock"))
+                Thread.Sleep(5000);
+            Process.Start("/bin/bash", "-c \"git -C /home/sasha/VISTA_MED/sasha/templates/ add . && git -C /home/sasha/VISTA_MED/sasha/templates/ commit -m '" + DateTime.Now + "'\"");
         }
 
         private static void WriteFile(string file, string templateFileDirectoryFile)
@@ -43,7 +53,7 @@ namespace HTMLTemplate.core.BL.Controller
             htmlWriterCreate.Write(templateFileDirectoryFile);
             htmlWriterCreate.Close();
         }
-        private static string GetFile(string? getDirectory, SqlConnectProperty connect, int id, string? docName) => $@"{getDirectory}/{id}_{docName}.html";
+        private static string GetFile(string? getDirectory, int id, string? docName) => $@"{getDirectory}{id}_{docName}.html";
 
         private static MysqlController MysqlController(SqlConnectProperty? conn)
         {
