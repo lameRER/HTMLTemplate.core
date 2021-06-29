@@ -110,7 +110,6 @@ namespace HTMLTemplate
                     break;
                 default:
                     throw new Exception("Неверное значение!");
-                    break;
             }
         }
         private static TemplateReadAllController TemplateReadAllController(SqlConnectProperty connect, PlatformController platform) => new(connect, platform);
