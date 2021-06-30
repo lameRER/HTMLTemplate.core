@@ -11,7 +11,7 @@ namespace HTMLTemplate.core.BL.Controller
     {
         public sealed override TemplateFile TemplateFile { get; set; } = new();
         public override PlatformController? Platform { get; }
-        
+
         private readonly SqlConnectProperty? _connect;
 
         public TemplateCreateController(string? fileName, string? fileCode, PlatformController platform,
