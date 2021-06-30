@@ -1,8 +1,10 @@
 #nullable enable
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Text;
+using System.Threading;
 using HTMLTemplate.core.BL.Base;
 using HTMLTemplate.core.BL.Model;
 
@@ -32,6 +34,14 @@ namespace HTMLTemplate.core.BL.Controller
                 CreateFile(TemplateFile.DirectoryTemplate);
                 WriteFile(TemplateFile.DirectoryFile, at.Default);
             }
+            AutoCommit();
+        }
+
+        private static void AutoCommit()
+        {
+            if(File.Exists("/home/sasha/VISTA_MED/sasha/templates/.git/index.lock"))
+                Thread.Sleep(5000);
+            Process.Start("/bin/bash", "-c \"git -C /home/sasha/VISTA_MED/sasha/templates/ add . && git -C /home/sasha/VISTA_MED/sasha/templates/ commit -m '" + DateTime.Now + "'\"");
         }
 
         private static void WriteFile(string file, string templateFileDirectoryFile)
