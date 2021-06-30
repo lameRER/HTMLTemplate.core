@@ -24,6 +24,7 @@ namespace HTMLTemplate.core.BL.Controller
 
         public override void Create()
         {
+            GitPull("/home/sasha/VISTA_MED/sasha/templates/");
             var sql = new MysqlController(_connect);
             var actionTypes = sql.GetRbPrintTemplateValue(sql.MySqlConnect());
             if (actionTypes == null) throw new ArgumentNullException(nameof(actionTypes));
@@ -34,14 +35,35 @@ namespace HTMLTemplate.core.BL.Controller
                 CreateFile(TemplateFile.DirectoryTemplate);
                 WriteFile(TemplateFile.DirectoryFile, at.Default);
             }
-            AutoCommit();
+            AutoCommit("/home/sasha/VISTA_MED/sasha/templates/");
+            GitPush("/home/sasha/VISTA_MED/sasha/templates/");
         }
 
-        private static void AutoCommit()
+        private static void GitPull(string directory)
         {
-            if(File.Exists("/home/sasha/VISTA_MED/sasha/templates/.git/index.lock"))
-                Thread.Sleep(5000);
-            Process.Start("/bin/bash", "-c \"git -C /home/sasha/VISTA_MED/sasha/templates/ add . && git -C /home/sasha/VISTA_MED/sasha/templates/ commit -m '" + DateTime.Now + "'\"");
+            Plug();
+            Process.Start("/bin/bash", "-c \"git -C " + directory + " checkout master && git -C " + directory + " pull all master && git -C " + directory + " checkout AUTO && git -C " + directory + " rebase master \"");
+            Plug();
+        }
+
+        private static void GitPush(string directory)
+        {
+            Plug();
+            Process.Start("/bin/bash", "-c \"git -C " + directory + " checkout master && git -C " + directory + " merge --no-f AUTO && git -C " + directory + " push origin master && git -C " + directory + " push upstream master\"");
+            Plug();
+        }
+
+        private static void AutoCommit(string directory)
+        {
+            Plug();
+            Process.Start("/bin/bash", "-c \"git -C "+directory+" add . && git -C "+directory+" commit -m '" + DateTime.Now + "'\"");
+            Plug();
+        }
+
+        private static void Plug()
+        {
+            while (File.Exists("/home/sasha/VISTA_MED/sasha/templates/.git/index.lock")) { Thread.Sleep(5000); }
+            Thread.Sleep(1000);
         }
 
         private static void WriteFile(string file, string templateFileDirectoryFile)

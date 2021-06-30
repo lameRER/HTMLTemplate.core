@@ -18,7 +18,7 @@ namespace HTMLTemplate
             }
             else
             {
-                StartUp();   
+                StartUp();
             }
         }
 
