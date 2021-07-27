@@ -26,10 +26,10 @@ namespace HTMLTemplate.core.BL.Base
             htmlWriterCreate.Close();
         }
 
-        protected virtual string? GetDirectory(Platform? getUserName)
+        protected virtual string? GetDirectory()
         {
             return Platform?.Platform is {PlatformId: PlatformID.Unix}
-                ? Environment.ExpandEnvironmentVariables($@"/%HOME%/VISTA_MED/{Platform.Platform.UserName}/templates/")
+                ? Environment.ExpandEnvironmentVariables($@"/%HOME%/VISTA_MED/templates/")
                 : null;
         }
         protected virtual string GetFile(string? getDirectory, string docContext, string? docName) => $@"{getDirectory}{docContext}_{docName}.html";
