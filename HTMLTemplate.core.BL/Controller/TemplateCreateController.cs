@@ -41,7 +41,7 @@ namespace HTMLTemplate.core.BL.Controller
             var actionTypes = sql.GetActionTypeValue(sql.MySqlConnect(), TemplateFile.FileName, TemplateFile.FileCode);
             if (actionTypes == null) throw new ArgumentNullException(nameof(actionTypes));
             TemplateFile.TemplateLine = new List<string>();
-            TemplateFile.DirectoryTemplate = GetDirectory(Platform?.Platform);
+            TemplateFile.DirectoryTemplate = GetDirectory();
             TemplateFile.DirectoryFile = GetFile(TemplateFile.DirectoryTemplate, TemplateFile.FileCode, TemplateFile.FileName);
             CreateFile(TemplateFile.DirectoryTemplate);
             WriteFile(TemplateFile.DirectoryFile);
