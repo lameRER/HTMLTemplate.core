@@ -7,7 +7,7 @@ using HTMLTemplate.core.BL.Models;
 
 namespace HTMLTemplate.core.BL.Controller
 {
-    public class MysqlController 
+    public class MysqlController
     {
         private readonly SqlConnectProperty _connect;
 
@@ -20,7 +20,7 @@ namespace HTMLTemplate.core.BL.Controller
         {
             return new(_connect);
         }
-        
+
         public IEnumerable<RbPrintTemplate> GetRbPrintTemplateValue(DataBaseContext context)
         {
             return context.RbPrintTemplates.ToList();
@@ -28,6 +28,11 @@ namespace HTMLTemplate.core.BL.Controller
         public IEnumerable<ActionType> GetActionTypeValue(DataBaseContext context, string? fileName, string? fileCode)
         {
             return context.ActionTypes.Where(e => e.Name == fileName &&  e.Code == fileCode);
+        }
+
+        public IEnumerable<ActionPropertyType> GetActionPropertyTypeValue(DataBaseContext context, IEnumerable<ActionType> action)
+        {
+            return context.ActionPropertyTypes.Where(e => e.ActionTypeId == action.Select(a => a.Id).First());
         }
     }
 }
