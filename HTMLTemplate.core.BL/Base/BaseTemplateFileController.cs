@@ -63,10 +63,10 @@ namespace HTMLTemplate.core.BL.Base
             htmlWriter1.Close();
         }
 
-        protected virtual void WriteFileProperty(IEnumerable<ActionType> listProperty)
+        protected virtual void WriteFileProperty(IEnumerable<ActionPropertyType> listProperty)
         {
             foreach (var prop in listProperty)
-                TemplateFile.TemplateLine.Add("				{if: prop.name == u'" + prop + "' and prop.value}" +
+                TemplateFile.TemplateLine.Add("				{if: prop.name == u'" + prop.Name + "' and prop.value}" +
                                               "<br><b>{prop.name}:</b> {prop.value}{end:}" + Environment.NewLine);
             #region htmLwriter
             var result = "<html>" + Environment.NewLine
