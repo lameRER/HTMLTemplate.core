@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Reflection;
 using HTMLTemplate.core.BL.Base;
 using HTMLTemplate.core.BL.Model;
+using System.Linq;
 
 namespace HTMLTemplate.core.BL.Controller
 {
@@ -40,12 +41,14 @@ namespace HTMLTemplate.core.BL.Controller
             var sql = MysqlController(_connect);
             var actionTypes = sql.GetActionTypeValue(sql.MySqlConnect(), TemplateFile.FileName, TemplateFile.FileCode);
             if (actionTypes == null) throw new ArgumentNullException(nameof(actionTypes));
+            var actionPropertyTypes = sql.GetActionPropertyTypeValue(sql.MySqlConnect(), actionTypes);
+            if (actionPropertyTypes == null) throw new ArgumentNullException(nameof(actionPropertyTypes));
             TemplateFile.TemplateLine = new List<string>();
             TemplateFile.DirectoryTemplate = GetDirectory();
             TemplateFile.DirectoryFile = GetFile(TemplateFile.DirectoryTemplate, TemplateFile.FileCode, TemplateFile.FileName);
             CreateFile(TemplateFile.DirectoryTemplate);
             WriteFile(TemplateFile.DirectoryFile);
-            WriteFileProperty(actionTypes);
+            WriteFileProperty(actionPropertyTypes);
         }
 
         private static MysqlController MysqlController(SqlConnectProperty? conn)
