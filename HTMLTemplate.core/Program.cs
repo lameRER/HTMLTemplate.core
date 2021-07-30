@@ -12,41 +12,7 @@ namespace HTMLTemplate
     {
         internal static void Main(string[] args)
         {
-            if (args.Length > 0 && args[0] == "-ReadAll")
-            {
-                ReadAll();
-            }
-            else
-            {
-                StartUp();
-            }
-        }
-
-        private static void ReadAll()
-        {
-            var eventNotify = new EventNotify();
-            try
-            {
-                var platform = new PlatformController();
-                var sqlTools = new SqlConnectController(platform.GetSettingsFile());
-                if (sqlTools.SqlToolsConnects == null) return;
-                foreach (var connect in sqlTools.SqlToolsConnects.Connects)
-                {
-                    try
-                    {
-                        TemplateReadAllController(connect,platform).Create();
-                        eventNotify.Select(connect.Name);
-                    }
-                    catch (Exception e)
-                    {
-                        eventNotify.Error(string.Concat(connect.Name, " ", MethodBase.GetCurrentMethod()?.ReflectedType?.Name), e);
-                    }
-                }
-            }
-            catch (Exception e)
-            {
-                eventNotify.Error(MethodBase.GetCurrentMethod()?.ReflectedType?.Name, e);
-            }
+            StartUp();
         }
 
         private static void StartUp()
