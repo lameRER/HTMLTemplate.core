@@ -38,9 +38,6 @@ namespace HTMLTemplate.core.BL.Model
         public int? UserProfileId { get; set; }
         public sbyte UserProfileBehaviour { get; set; }
         public sbyte CopyModifier { get; set; }
-        public bool IsVitalParam { get; set; }
-        public int? VitalParamId { get; set; }
-        public bool IsOdiiparam { get; set; }
         public sbyte? TicketsNeeded { get; set; }
         public string CustomSelect { get; set; }
         public string AutoFieldUserProfile { get; set; }
