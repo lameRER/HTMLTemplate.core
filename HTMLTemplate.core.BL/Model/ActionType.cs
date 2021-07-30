@@ -83,7 +83,6 @@ namespace HTMLTemplate.core.BL.Model
         public int? RefferalTypeId { get; set; }
         public bool? FilterPosts { get; set; }
         public bool? FilterSpecialities { get; set; }
-        public bool? ShowAporg { get; set; }
         public bool? IsIgnoreEventExecDate { get; set; }
         public string FormulaAlias { get; set; }
         public virtual ActionType Group { get; set; }

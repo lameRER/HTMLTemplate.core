@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using HTMLTemplate.core.BL.Models;
 using Microsoft.EntityFrameworkCore;
 
@@ -691,17 +692,9 @@ namespace HTMLTemplate.core.BL.Model
                     .HasColumnName("isFrozen")
                     .HasComment("Свойство закреплено (0-нет, 1-да)");
 
-                entity.Property(e => e.IsOdiiparam)
-                    .HasColumnName("isODIIParam")
-                    .HasComment("Является параметром ОДИИ (0-нет, 1-да)");
-
                 entity.Property(e => e.IsVector)
                     .HasColumnName("isVector")
                     .HasComment("Это векторное значение");
-
-                entity.Property(e => e.IsVitalParam)
-                    .HasColumnName("isVitalParam")
-                    .HasComment("Является витальным параметром (0-нет, 1-да)");
 
                 entity.Property(e => e.LaboratoryCalculator)
                     .HasMaxLength(3)
@@ -804,11 +797,6 @@ namespace HTMLTemplate.core.BL.Model
                 entity.Property(e => e.VisibleInTableRedactor)
                     .HasColumnName("visibleInTableRedactor")
                     .HasComment("0-Не видно, 1-Режим редактирвоания, 2-Без редактирования");
-
-                entity.Property(e => e.VitalParamId)
-                    .HasColumnType("int(11)")
-                    .HasColumnName("vitalParamId")
-                    .HasComment("Тип витального параметра {rbVitalParams}");
 
                 entity.HasOne(d => d.ActionType)
                     .WithMany(p => p.ActionPropertyTypes)
@@ -1205,10 +1193,6 @@ namespace HTMLTemplate.core.BL.Model
                     .HasColumnType("int(11)")
                     .HasColumnName("shedule_id")
                     .HasComment("График по умолчанию {rbActionShedule}");
-
-                entity.Property(e => e.ShowAporg)
-                    .HasColumnName("showAPOrg")
-                    .HasDefaultValueSql("'1'");
 
                 entity.Property(e => e.ShowInForm)
                     .HasColumnName("showInForm")
