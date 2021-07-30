@@ -34,10 +34,5 @@ namespace HTMLTemplate.core.BL.Controller
         {
             return context.ActionPropertyTypes.Where(e => e.ActionTypeId == action.Select(a => a.Id).First());
         }
-
-        public IEnumerable<ActionPropertyType> GetActionPropertyTypeValue(DataBaseContext context, IEnumerable<ActionType> action)
-        {
-            return context.ActionPropertyTypes.Where(e => e.ActionTypeId == action.Select(a => a.Id).First());
-        }
     }
 }
