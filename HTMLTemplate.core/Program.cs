@@ -17,6 +17,7 @@ namespace HTMLTemplate
 
         private static void StartUp()
         {
+            var eventNotify = new EventNotify();
             try
             {
                 var platform = new PlatformController();
@@ -31,20 +32,12 @@ namespace HTMLTemplate
             }
             catch (Exception e)
             {
-                Error(e);
+                eventNotify.Error(MethodBase.GetCurrentMethod()?.ReflectedType?.Name, e);
             }
             finally
             {
                 StartUp();
             }
-        }
-
-        static void Error(Exception exception)
-        {
-            Console.Clear();
-            Console.ForegroundColor = ConsoleColor.Red;
-            Console.WriteLine(exception.Message);
-            Console.ResetColor();
         }
         private static int? GetConnect()
         {
@@ -72,7 +65,7 @@ namespace HTMLTemplate
             switch (Convert.ToInt32(Console.ReadLine()))
             {
                 case 1:
-                    new TemplateReadAllController(connect,platform).Create();
+                    TemplateReadAllController(connect,platform).Create();
                     break;
                 case 2:
                     Console.Write("Имя документа: ");
@@ -83,13 +76,9 @@ namespace HTMLTemplate
                     break;
                 default:
                     throw new Exception("Неверное значение!");
-                    break;
             }
         }
-
-        private static TemplateCreateController TemplateCreateController(string fileName, string fileCode, PlatformController platform, SqlConnectProperty connect)
-        {
-            return new(fileName, fileCode, platform, connect);
-        }
+        private static TemplateReadAllController TemplateReadAllController(SqlConnectProperty connect, PlatformController platform) => new(connect, platform);
+        private static TemplateCreateController TemplateCreateController(string fileName, string fileCode, PlatformController platform, SqlConnectProperty connect) => new(fileName, fileCode, platform, connect);
     }
 }

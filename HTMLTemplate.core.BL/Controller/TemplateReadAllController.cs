@@ -1,8 +1,10 @@
 #nullable enable
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Text;
+using System.Threading;
 using HTMLTemplate.core.BL.Base;
 using HTMLTemplate.core.BL.Model;
 
@@ -25,12 +27,13 @@ namespace HTMLTemplate.core.BL.Controller
             var sql = new MysqlController(_connect);
             var actionTypes = sql.GetRbPrintTemplateValue(sql.MySqlConnect());
             if (actionTypes == null) throw new ArgumentNullException(nameof(actionTypes));
-            TemplateFile.DirectoryTemplate = GetDirectory(Platform?.Platform);
+            TemplateFile.DirectoryTemplate = string.Concat(GetDirectory(), _connect.Name, '/');
             foreach (var at in actionTypes)
             {
                 TemplateFile.DirectoryFile = GetFile(TemplateFile.DirectoryTemplate, at.Id, at.Name.Replace(".", "_").Replace(" ", "_").Replace("/", "_"));
                 CreateFile(TemplateFile.DirectoryTemplate);
-                WriteFile(TemplateFile.DirectoryFile, at.Default);    
+                WriteFile(TemplateFile.DirectoryFile, at.Default);
+
             }
         }
 

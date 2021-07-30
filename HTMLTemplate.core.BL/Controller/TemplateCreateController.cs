@@ -12,7 +12,7 @@ namespace HTMLTemplate.core.BL.Controller
     {
         public sealed override TemplateFile TemplateFile { get; set; } = new();
         public override PlatformController? Platform { get; }
-        
+
         private readonly SqlConnectProperty? _connect;
 
         public TemplateCreateController(string? fileName, string? fileCode, PlatformController platform,
@@ -44,7 +44,7 @@ namespace HTMLTemplate.core.BL.Controller
             var actionPropertyTypes = sql.GetActionPropertyTypeValue(sql.MySqlConnect(), actionTypes);
             if (actionPropertyTypes == null) throw new ArgumentNullException(nameof(actionPropertyTypes));
             TemplateFile.TemplateLine = new List<string>();
-            TemplateFile.DirectoryTemplate = GetDirectory(Platform?.Platform);
+            TemplateFile.DirectoryTemplate = GetDirectory();
             TemplateFile.DirectoryFile = GetFile(TemplateFile.DirectoryTemplate, TemplateFile.FileCode, TemplateFile.FileName);
             CreateFile(TemplateFile.DirectoryTemplate);
             WriteFile(TemplateFile.DirectoryFile);
