@@ -27,7 +27,12 @@ namespace HTMLTemplate.core.BL.Controller
         }
         public IEnumerable<ActionType> GetActionTypeValue(DataBaseContext context, string? fileName, string? fileCode)
         {
-            return context.ActionTypes.Where(e => e.Name == fileName &&  e.Code == fileCode);
+            return context.ActionTypes.Where(e => e.Name == fileName && e.Code == fileCode);
+        }
+
+        public IEnumerable<ActionPropertyType> GetActionPropertyTypeValue(DataBaseContext context, IEnumerable<ActionType> action)
+        {
+            return context.ActionPropertyTypes.Where(e => e.ActionTypeId == action.Select(a => a.Id).First());
         }
 
         public IEnumerable<ActionPropertyType> GetActionPropertyTypeValue(DataBaseContext context, IEnumerable<ActionType> action)
