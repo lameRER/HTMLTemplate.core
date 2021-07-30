@@ -10,7 +10,7 @@ namespace HTMLTemplate
 {
     public static class Program
     {
-        internal static void Main(string[] args)
+        internal static void Main()
         {
             StartUp();
         }
