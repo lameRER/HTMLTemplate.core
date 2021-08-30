@@ -24,7 +24,6 @@ namespace HTMLTemplate.core.BL.Controller
 
         public override void Create()
         {
-            GitPull(GetDirectory());
             var sql = new MysqlController(_connect);
             var actionTypes = sql.GetRbPrintTemplateValue(sql.MySqlConnect());
             if (actionTypes == null) throw new ArgumentNullException(nameof(actionTypes));
@@ -35,35 +34,6 @@ namespace HTMLTemplate.core.BL.Controller
                 CreateFile(TemplateFile.DirectoryTemplate);
                 WriteFile(TemplateFile.DirectoryFile, at.Default);
             }
-            AutoCommit(GetDirectory());
-            GitPush(GetDirectory());
-        }
-
-        private static void GitPull(string directory)
-        {
-            Plug(directory);
-            Process.Start("/bin/bash", "-c \"git -C " + directory + " checkout master && git -C " + directory + " fetch upstream master && git -C " + directory + " pull upstream master && git -C " + directory + " checkout AUTO \"");
-            Plug(directory);
-        }
-
-        private static void GitPush(string directory)
-        {
-            Plug(directory);
-            Process.Start("/bin/bash", "-c \"git -C " + directory + " merge master && git -C " + directory + " checkout master && git -C " + directory + " merge --no-ff AUTO && git -C " + directory + " push origin master && git -C " + directory + " push upstream master\"");
-            Plug(directory);
-        }
-
-        private static void AutoCommit(string directory)
-        {
-            Plug(directory);
-            Process.Start("/bin/bash", "-c \"git -C "+directory+" add . && git -C "+directory+" commit -m '" + DateTime.Now + "'\"");
-            Plug(directory);
-        }
-
-        private static void Plug(string directory)
-        {
-            while (File.Exists(directory + ".git/index.lock")) { Thread.Sleep(5000); }
-            Thread.Sleep(1000);
         }
 
         private static void WriteFile(string file, string templateFileDirectoryFile)
