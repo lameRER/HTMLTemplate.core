@@ -2,9 +2,9 @@ name: .NET
 
 on:
   push:
-    branches: [ neftu1 ]
+    branches: [ Release ]
   pull_request:
-    branches: [ neftu1 ]
+    branches: [ Release ]
 
 jobs:
   build:

@@ -33,7 +33,6 @@ namespace HTMLTemplate.core.BL.Controller
                 TemplateFile.DirectoryFile = GetFile(TemplateFile.DirectoryTemplate, at.Id, at.Name.Replace(".", "_").Replace(" ", "_").Replace("/", "_"));
                 CreateFile(TemplateFile.DirectoryTemplate);
                 WriteFile(TemplateFile.DirectoryFile, at.Default);
-
             }
         }
 
