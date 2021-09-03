@@ -20,7 +20,7 @@ namespace HTMLTemplate.core.BL.Model
         {
             Notify?.Invoke(this, new MyEventArgs($"[ERROR] {value}: {exception}"));
         }
-        
+
         public static void Mysql_StateChange(object sender, StateChangeEventArgs e)
         {
             Console.ResetColor();
@@ -54,20 +54,6 @@ namespace HTMLTemplate.core.BL.Model
                 Console.ResetColor();
             }
             Console.WriteLine();
-        }
-    }   
-    public class MyEventArgs : EventArgs
-    {
-        private readonly string _eventInfo;
-
-        public MyEventArgs(string text)
-        {
-            _eventInfo = text;
-        }
-
-        public string GetInfo()
-        {
-            return _eventInfo;
         }
     }
 }
