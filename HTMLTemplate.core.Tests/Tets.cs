@@ -10,7 +10,7 @@ namespace HTMLTemplate.core.Tests
         [SetUp]
         public void Setup(){}
 
-        [Test]
+        // [Test]
         public void MysqlStatic()
         {
             var platform = new PlatformController();
@@ -28,7 +28,7 @@ namespace HTMLTemplate.core.Tests
             Assert.AreEqual(fileName, text);
         }
 
-        [Test]
+        // [Test]
         public void TemplateCreateControllerTest()
         {
             var platform = new PlatformController();
