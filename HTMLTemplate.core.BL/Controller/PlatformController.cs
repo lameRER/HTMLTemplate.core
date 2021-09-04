@@ -34,15 +34,17 @@ namespace HTMLTemplate.core.BL.Controller
         }
         public string GetSettingsFile()
         {
-            return ((IPlatformProperty) Platform).PlatformId switch
-            {
-                PlatformID.Unix => File.ReadAllText(
-                    Environment.ExpandEnvironmentVariables($"%HOME%/.config/Code/User/settings.json")),
-                PlatformID.Win32Windows => File.ReadAllText(
-                    Environment.ExpandEnvironmentVariables(@"%APPDATA%\Code\User\settings.json")),
-                _ => File.ReadAllText(
-                    Environment.ExpandEnvironmentVariables($"{Directory.GetCurrentDirectory()}/settings.json"))
-            };
+            if (((IPlatformProperty)Platform).PlatformId == PlatformID.Unix)
+                return File.ReadAllText(
+                    Environment.ExpandEnvironmentVariables($"%HOME%/.config/Code/User/settings.json"));
+            if (((IPlatformProperty)Platform).PlatformId == PlatformID.Win32Windows)
+                return File.ReadAllText(
+                    Environment.ExpandEnvironmentVariables(@"%APPDATA%\Code\User\settings.json"));
+
+            if(File.Exists(Environment.ExpandEnvironmentVariables($"{Directory.GetCurrentDirectory()}/settings.json")))
+                return File.ReadAllText(
+                    Environment.ExpandEnvironmentVariables($"{Directory.GetCurrentDirectory()}/settings.json"));
+            return null;
         }
     }
 }
