@@ -16,9 +16,9 @@ namespace HTMLTemplate.core.Tests
             var platform = new PlatformController();
             var sqlTools = new SqlConnectController(platform.GetSettingsFile());
             string text = null;
-            const string fileCode = "16490-1";
-            const string fileName = "Рентгенография всего черепа, в одной или более проекциях";
-            var context = new DataBaseContext(sqlTools.SqlToolsConnects?.Connects[0]);
+            const string fileCode = "nevr";
+            const string fileName = "Осмотр врача-невролога";
+            var context = new DataBaseContext(sqlTools.SqlToolsConnects?.Connects[34]);
             var printTemplate = context.ActionTypes.Where(e => e.Name == fileName &&  e.Code == fileCode);
             foreach (var item in printTemplate)
             {
@@ -33,9 +33,9 @@ namespace HTMLTemplate.core.Tests
         {
             var platform = new PlatformController();
             var sqlTools = new SqlConnectController(platform.GetSettingsFile());
-            var connect = sqlTools.SqlToolsConnects?.Connects[0];
-            const string fileCode = "16490-1";
-            const string fileName = "Рентгенография всего черепа, в одной или более проекциях";
+            var connect = sqlTools.SqlToolsConnects?.Connects[34];
+            const string fileCode = "nevr";
+            const string fileName = "Осмотр врача-невролога";
             var templateReadAllController = new TemplateReadAllController(connect,platform);
             templateReadAllController.Create();
             var templateCreateController = new TemplateCreateController(fileName, fileCode, platform, connect);
