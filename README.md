@@ -1,5 +1,5 @@
 # HTMLTemplate.core
-https://github.com/parsiad/mlinterp/archive/v0.1.zip <br>
+[releases](https://github.com/lameRER/HTMLTemplate.core/releases) <br>
 [![wakatime](https://wakatime.com/badge/github/lameRER/HTMLTemplate.core.svg)](https://wakatime.com/badge/github/lameRER/HTMLTemplate.core)<br>
 ![GitHub commit activity](https://img.shields.io/github/commit-activity/m/lamerer/htmltemplate.core)<br>
 ![GitHub issues](https://img.shields.io/github/issues/lamerer/HTMLTemplate.core)<br>
