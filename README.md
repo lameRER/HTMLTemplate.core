@@ -1,5 +1,6 @@
 # HTMLTemplate.core
 [Downloads](https://github.com/lameRER/HTMLTemplate.core/releases/download/v2.2.9.11-VM/HTMLTemplate.core.2.2.9.11-VM.tar) <br>
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/39221d5f4739476caf277028c1744b10)](https://app.codacy.com/gh/lameRER/HTMLTemplate.core?utm_source=github.com&utm_medium=referral&utm_content=lameRER/HTMLTemplate.core&utm_campaign=Badge_Grade_Settings)
 [![wakatime](https://wakatime.com/badge/github/lameRER/HTMLTemplate.core.svg)](https://wakatime.com/badge/github/lameRER/HTMLTemplate.core)<br>
 ![GitHub commit activity](https://img.shields.io/github/commit-activity/m/lamerer/htmltemplate.core)<br>
 ![GitHub issues](https://img.shields.io/github/issues/lamerer/HTMLTemplate.core)<br>
