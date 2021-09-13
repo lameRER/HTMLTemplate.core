@@ -1,11 +1,11 @@
 # HTMLTemplate.core
-[Downloads](https://github.com/lameRER/HTMLTemplate.core/releases/download/v2.2.9.11-VM/HTMLTemplate.core.2.2.9.11-VM.tar) <br>
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/39221d5f4739476caf277028c1744b10)](https://app.codacy.com/gh/lameRER/HTMLTemplate.core?utm_source=github.com&utm_medium=referral&utm_content=lameRER/HTMLTemplate.core&utm_campaign=Badge_Grade_Settings)
 [![wakatime](https://wakatime.com/badge/github/lameRER/HTMLTemplate.core.svg)](https://wakatime.com/badge/github/lameRER/HTMLTemplate.core)<br>
 ![GitHub commit activity](https://img.shields.io/github/commit-activity/m/lamerer/htmltemplate.core)<br>
 ![GitHub issues](https://img.shields.io/github/issues/lamerer/HTMLTemplate.core)<br>
 ![GitHub pull requests](https://img.shields.io/github/issues-pr/lamerer/HTMLTemplate.core)<br>
 [![Codacy Badge](https://app.codacy.com/project/badge/Grade/68435c4e1b184febadead8f02649e986)](https://www.codacy.com/gh/lameRER/HTMLTemplate.core/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=lameRER/HTMLTemplate.core&amp;utm_campaign=Badge_Grade)<br>
+[![CodeFactor](https://www.codefactor.io/repository/github/lamerer/htmltemplate.core/badge)](https://www.codefactor.io/repository/github/lamerer/htmltemplate.core)<br>
 <br>
 Master:<br>
 ![GitHub Workflow Status (branch)](https://img.shields.io/github/workflow/status/lameRER/HTMLTemplate.core/.NET/master)<br>
