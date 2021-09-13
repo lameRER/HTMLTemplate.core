@@ -8,12 +8,15 @@
 <br>
 Master:<br>
 ![GitHub Workflow Status (branch)](https://img.shields.io/github/workflow/status/lameRER/HTMLTemplate.core/.NET/master)<br>
+![GitHub Workflow Status (branch)](https://img.shields.io/github/workflow/status/lameRER/HTMLTemplate.core/CodeQL/master)<br>
 ![GitHub branch checks state](https://img.shields.io/github/checks-status/lameRER/HTMLTemplate.core/master)<br>
 <br>
 Release:<br>
 ![GitHub Workflow Status (branch)](https://img.shields.io/github/workflow/status/lameRER/HTMLTemplate.core/.NET/Release)<br>
+![GitHub Workflow Status (branch)](https://img.shields.io/github/workflow/status/lameRER/HTMLTemplate.core/CodeQL/Release)<br>
 ![GitHub branch checks state](https://img.shields.io/github/checks-status/lameRER/HTMLTemplate.core/Release)<br>
 <br>
 Vista-Med:<br>
 ![GitHub Workflow Status (branch)](https://img.shields.io/github/workflow/status/lameRER/HTMLTemplate.core/.NET/Vista-Med)<br>
+![GitHub Workflow Status (branch)](https://img.shields.io/github/workflow/status/lameRER/HTMLTemplate.core/CodeQL/Vista-Med)<br>
 ![GitHub branch checks state](https://img.shields.io/github/checks-status/lameRER/HTMLTemplate.core/Vista-Med)<br>
