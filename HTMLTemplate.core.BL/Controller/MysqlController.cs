@@ -34,5 +34,11 @@ namespace HTMLTemplate.core.BL.Controller
         {
             return context.ActionPropertyTypes.Where(e => e.ActionTypeId == action.Select(a => a.Id).First());
         }
+
+        public void SetRbPrintTemplateValue(DataBaseContext context, RbPrintTemplate rbPrintTemplate)
+        {
+            context.RbPrintTemplates.Add(rbPrintTemplate);
+            context.SaveChanges();
+        }
     }
 }
