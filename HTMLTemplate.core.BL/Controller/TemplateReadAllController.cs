@@ -42,14 +42,14 @@ namespace HTMLTemplate.core.BL.Controller
         private static void GitPull(string directory)
         {
             Plug(directory);
-            Process.Start("/bin/bash", "-c \"git -C " + directory + " checkout master && git -C " + directory + " fetch upstream master && git -C " + directory + " pull upstream master && git -C " + directory + " checkout AUTO \"");
+            Process.Start("/bin/bash", "-c \"git -C " + directory + " checkout master && git -C " + directory + " pull && git -C " + directory + " checkout AUTO \"");
             Plug(directory);
         }
 
         private static void GitPush(string directory)
         {
             Plug(directory);
-            Process.Start("/bin/bash", "-c \"git -C " + directory + " merge master && git -C " + directory + " checkout master && git -C " + directory + " merge --no-ff AUTO && git -C " + directory + " push origin master && git -C " + directory + " push upstream master\"");
+            Process.Start("/bin/bash", "-c \"git -C " + directory + " merge master && git -C " + directory + " checkout master && git -C " + directory + " merge --no-ff AUTO && git -C " + directory + " push \"");
             Plug(directory);
         }
 

@@ -1,10 +1,12 @@
 #nullable enable
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Reflection;
 using HTMLTemplate.core.BL.Base;
 using HTMLTemplate.core.BL.Model;
 using System.Linq;
+using HTMLTemplate.core.BL.Models;
 
 namespace HTMLTemplate.core.BL.Controller
 {
@@ -49,6 +51,19 @@ namespace HTMLTemplate.core.BL.Controller
             CreateFile(TemplateFile.DirectoryTemplate);
             WriteFile(TemplateFile.DirectoryFile);
             WriteFileProperty(actionPropertyTypes);
+            var rbPrintTemplate = new RbPrintTemplate()
+            {
+                CreateDatetime = DateTime.Now,
+                ModifyDatetime = DateTime.Now,
+                Code = TemplateFile.FileCode,
+                Name = TemplateFile.FileName,
+                Context = TemplateFile.FileCode,
+                DpdAgreement = false,
+                FileName = "",
+                Type = false,
+                Default = File.ReadAllText(TemplateFile.DirectoryFile)
+            };
+            sql.SetRbPrintTemplateValue(sql.MySqlConnect(), rbPrintTemplate);
         }
 
         private static MysqlController MysqlController(SqlConnectProperty? conn)
